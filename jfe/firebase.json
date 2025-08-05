@@ -1,1 +1,5 @@
-{}
+{
+  "apphosting": {
+    "source": "."
+  }
+}
