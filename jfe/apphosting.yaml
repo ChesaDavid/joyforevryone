@@ -1,0 +1,69 @@
+# Settings for Backend (on Cloud Run).
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+runConfig:
+  minInstances: 0
+  # maxInstances: 100
+  # concurrency: 80
+  # cpu: 1
+  # memoryMiB: 512
+
+# Environment variables and secrets.
+env:
+  # Configure environment variables.
+  # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
+  - variable: NEXT_PUBLIC_API_KEY
+    secret: myApyKeySecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_AUTH_DOMAIN
+    secret: myAuthDomainSecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_PROJECT_KEY
+    secret: myProjectKeySecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_STORAGE_BUCKET
+    secret: myStorageBucketSecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_MESSAGING_SENDER_ID
+    secret: myMessagingSenderIdSecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_APP_ID
+    secret: myAppIdSecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_MEASUREMENT_ID
+    secret: myMeasurementIdSecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_RESEND_API_KEY
+    secret: myResendApiKeySecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_COORDONATOR_EMAILS
+    value: david.chesa.it@gmail.com,jfetimisoara@gmail.com,dosoniuvictor@gmail.com,vanda.carmina55@gmail.com,tokar.andreeamiruna@student.uoradea.ro,amaliaioana0706@gmail.com,chirajurj.miruna@gmail.com
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: OPENAI_API_KEY
+    secret: myOpenAiApiKeySecret@1
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Grant access to secrets in Cloud Secret Manager.
+  # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
+  # - variable: MY_SECRET
+  #   secret: mySecretRef
