@@ -50,7 +50,7 @@ export const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen pt-15 pb-15 bg-gray-900">
+    <div className="flex flex-col items-center justify-center min-h-screen pt-15 pb-15 bg-gray-950">
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-600 blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-60 h-60 bg-cyan-600 blur-3xl"></div>

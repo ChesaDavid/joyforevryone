@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JFE Site
 
-## Getting Started
+This is a web application for managing and showcasing projects, built using **Next.js**, **Firebase**, and **Tailwind CSS**. The app includes user authentication, event attendance tracking (`prezente`), and AI-generated project descriptions.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🧩 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🔐 **Authentication** — Sign up / Login with Firebase Authentication
+- 🏠 **Home Page** — Publicly accessible landing page with navigation
+- 📄 **About Us** — Info page about the JFE organization or project
+- 📝 **Add Project** — Authenticated users can add projects with images and metadata
+- 🤖 **AI Integration** — Auto-generate project descriptions via OpenAI
+- 📅 **Prezente (Attendance)** — Saturday-only event registration with visual calendar and user linking
+- 📷 **Image Uploads** — Upload project thumbnails to Firebase Storage
+- 🗃️ **Firestore** — Store user data, projects, and attendance records securely
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Pages Overview
 
-## Learn More
+### 🔹 Home Page
 
-To learn more about Next.js, take a look at the following resources:
+![Home Page seen on the site desktop](/assets/homePageGuest.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The landing page provides an overview of the platform and highlights featured projects.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🔹 About Us
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+An informational page about the mission, values, and people behind the platform. This page is static but easily editable in `app/about/page.tsx`.
+
+---
+
+### 🔹 Login / Sign Up
+
+- Users can sign up or log in using Firebase Authentication.
+- Password reset functionality is included.
+- Auth state is managed globally via React context.
+
+---
+
+### 🔹 Projects
+
+- Users can add new projects with:
+  - Title
+  - Description (manually or generated with AI)
+  - Image (uploaded to Firebase Storage)
+  - Start time
+- Projects are stored in Firestore and visible on the main project listing page.
+
+---
+
+### 🔹 Prezente
+
+- Attendance system for events (limited to Saturdays)
+- Integrated calendar UI
+- Visual indicators of presence
+- Stored in Firestore per user & event
+
+---
+
+## 📦 Tech Stack
+
+| Tech           | Description                          |
+|----------------|--------------------------------------|
+| Next.js        | React framework for SSR/SPAs         |
+| Tailwind CSS   | Modern utility-first styling         |
+| Firebase       | Backend-as-a-service (Auth, DB, Storage) |
+| React Context  | Global state for user auth           |
+| OpenAI API     | Description generation               |
+
+---
+
+## 📂 Folder Structure
+
+!()
+---
+
+## 🔧 Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ChesaDavid/joyforevryone.git
+   cd jfe-site

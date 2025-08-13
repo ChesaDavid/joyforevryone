@@ -191,7 +191,7 @@ const AuthPage = () => {
           </button>
         </div>
         <div className="text-center">
-          <p className="text-sm text-gray-600">
+          <div className="text-sm text-gray-600">
             {isSignUp ? (
               <>
                 Already have an account?{' '}
@@ -205,7 +205,7 @@ const AuthPage = () => {
                 </span>
               </>
             ) : (
-              <main className="flex flex-col items-center" >
+              <div className="flex flex-col items-center" >
               <span className="text-sm text-gray-600">
                 Don't have an account?{' '}
                 <span
@@ -223,9 +223,9 @@ const AuthPage = () => {
                 }}>
                   Forgot your password?
                 </span>
-              </main>
+              </div>
             )}
-          </p>
+          </div>
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ type Project = {
     participants: string[];
     startOfBegining: string;
     imageUrl: string;
+    participantsEmails: string[];
 }
 
 const ProjectsPage:React.FC = ()=>{

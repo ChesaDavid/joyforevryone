@@ -8,47 +8,64 @@ runConfig:
   # memoryMiB: 512
 
 # Environment variables and secrets.
-env:
+# env:
   # Configure environment variables.
   # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
+  # - variable: MESSAGE
+  #   value: Hello world!
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+env:
+  - variable: NODE_ENV
+    value: production
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: PORT
+    value: 4000
+    availability:
+      - BUILD
+      - RUNTIME
+  
   - variable: NEXT_PUBLIC_API_KEY
-    secret: myApyKeySecret@1
+    secret: myApyKeySecret
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_AUTH_DOMAIN
-    secret: myAuthDomainSecret@1
+    value: jfe-site.firebaseapp.com
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_PROJECT_KEY
-    secret: myProjectKeySecret@1
+    value: jfe-site
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_STORAGE_BUCKET
-    secret: myStorageBucketSecret@1
+    secret: myStorageBucketSecret
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_MESSAGING_SENDER_ID
-    secret: myMessagingSenderIdSecret@1
+    secret: myMessagingSenderIdSecret
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_APP_ID
-    secret: myAppIdSecret@1
+    value: 1:823488212718:web:a0b8779d6f45550909cdff
     availability:
       - BUILD
       - RUNTIME
   - variable: NEXT_PUBLIC_MEASUREMENT_ID
-    secret: myMeasurementIdSecret@1
+    secret: myMeasurementIdSecret
     availability:
       - BUILD
       - RUNTIME
 
   - variable: NEXT_PUBLIC_RESEND_API_KEY
-    secret: myResendApiKeySecret@1
+    secret: myResendApiKeySecret
     availability:
       - BUILD
       - RUNTIME
@@ -58,7 +75,7 @@ env:
       - BUILD
       - RUNTIME
   - variable: OPENAI_API_KEY
-    secret: myOpenAiApiKeySecret@1
+    secret: myOpenAiApiKeySecret
     availability:
       - BUILD
       - RUNTIME

@@ -19,7 +19,8 @@ export const Navbar: React.FC = () => {
   const userLinks = [
     user && { href: `/dashboard/${user.uid}`, label: "Dashboard", icon: "brifecase", show: !!user },
     { href: "/login", label: "Login", show: !user },
-    { href: "/logout", label: "Logout", show: !!user }
+    {href:"/donations", label: "Donations", icon: "heart", show: true},
+    { href: "/logout", label: "Logout", show: !!user },
   ].filter(Boolean);
 
   return (
