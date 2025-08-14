@@ -40,6 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-app/firebase/userHelpers.ts
 
 node_modules
