@@ -69,11 +69,6 @@ env:
     availability:
       - BUILD
       - RUNTIME
-  - variable: NEXT_PUBLIC_COORDONATOR_EMAILS
-    value: david.chesa.it@gmail.com,jfetimisoara@gmail.com,dosoniuvictor@gmail.com,vanda.carmina55@gmail.com,tokar.andreeamiruna@student.uoradea.ro,amaliaioana0706@gmail.com,chirajurj.miruna@gmail.com
-    availability:
-      - BUILD
-      - RUNTIME
   - variable: OPENAI_API_KEY
     secret: myOpenAiApiKeySecret
     availability:
