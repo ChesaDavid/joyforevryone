@@ -25,9 +25,9 @@ const Navbar: React.FC = () => {
   ].filter(Boolean);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-30 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 shadow-lg">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className=" flex justify-between w-min-screen items-center h-16">
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <span className="w-11 h-11   rounded-lg flex items-center justify-center text-2xl font-bold text-white shadow-lg">

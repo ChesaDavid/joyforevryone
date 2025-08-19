@@ -94,103 +94,116 @@ const DonationsPage: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gray-950 flex mt-15 flex-col items-center justify-center p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">Donează pentru JoyForEveryone</h2>
-        <p className="text-center text-gray-300 mb-6">
-          Poți susține ONG-ul nostru direct prin transfer bancar:
-        </p>
-        <div className="bg-gray-800 p-4 rounded-lg mb-6 text-center">
-          <span className="font-semibold text-cyan-400">IBAN:</span>
-          <br />
-          <span className="text-lg font-mono text-white">RO76BTRLRONCRT0607657602</span>
-          <br />
-          <span className="text-sm text-gray-400">Banca Transilvania</span>
+    <main className="min-h-screen flex items-center justify-center bg-gray-950 px-2 py-8 pt-20">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-8">
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full text-center">
+          <h2 className="text-2xl font-bold mb-2">Donează pentru JoyForEveryone</h2>
+          <p className="text-gray-300 mb-4">
+            Poți susține ONG-ul nostru direct prin transfer bancar:
+          </p>
+          <div className="bg-gray-800 p-4 rounded-lg mb-4">
+            <span className="font-semibold text-cyan-400">IBAN:</span>
+            <br />
+            <span className="text-lg font-mono text-white">RO76BTRLRONCRT0607657602</span>
+            <br />
+            <span className="text-sm text-gray-400">Banca Transilvania</span>
+          </div>
+          <h1 className="text-lg font-semibold text-gray-200">SAU...</h1>
         </div>
-        <h1>SAU...</h1>
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
-        <h2 className="text-2xl font-bold mb-4 text-center">Formularul 230: Redirecționează 3.5% din impozit</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input type="text" name="familyName" required placeholder="Numele de familie *" value={form.familyName} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="fatherInitial" placeholder="Inițiala tatălui" value={form.fatherInitial} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="firstName" required placeholder="Prenume *" value={form.firstName} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input type="text" name="cnp" required placeholder="CNP *" value={form.cnp} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="email" name="email" placeholder="Adresa Email" value={form.email} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="phone" placeholder="Număr de telefon" value={form.phone} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-          </div>
-          <div className="font-semibold mt-4 mb-2">Adresa:</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="locality" required placeholder="Localitate *" value={form.locality} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="county" required placeholder="Județ *" value={form.county} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="street" required placeholder="Strada *" value={form.street} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="number" required placeholder="Număr *" value={form.number} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <input type="text" name="block" placeholder="Bloc" value={form.block} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="staircase" placeholder="Scară" value={form.staircase} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="floor" placeholder="Etaj" value={form.floor} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-            <input type="text" name="apartment" placeholder="Apartament" value={form.apartment} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
-          </div>
-          <input type="text" name="postalCode" placeholder="Cod Poștal" value={form.postalCode} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white" />
-          <div className="mt-4">
-            <span className="font-semibold">Vreau să redirecționez pe perioada de 2 ani:</span>
-            <div className="flex gap-4 mt-2">
-              <label className="flex items-center">
-                <input type="radio" name="redirect2Years" value="DA" checked={form.redirect2Years === "DA"} onChange={handleChange} className="mr-2" />
-                DA
-              </label>
-              <label className="flex items-center">
-                <input type="radio" name="redirect2Years" value="NU" checked={form.redirect2Years === "NU"} onChange={handleChange} className="mr-2" />
-                NU
-              </label>
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full">
+          <h2 className="text-2xl font-bold mb-4 text-center">Formularul 230: Redirecționează 3.5% din impozit</h2>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input type="text" name="familyName" required placeholder="Numele de familie *" value={form.familyName} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="fatherInitial" placeholder="Inițiala tatălui" value={form.fatherInitial} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="firstName" required placeholder="Prenume *" value={form.firstName} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
             </div>
-          </div>
-          <div className="mt-4">
-            <span className="font-semibold">Semnătură:</span>
-            <div className="border rounded bg-white p-2">
-              <canvas
-                ref={canvasRef}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input type="text" name="cnp" required placeholder="CNP *" value={form.cnp} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="email" name="email" placeholder="Adresa Email" value={form.email} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="phone" placeholder="Număr de telefon" value={form.phone} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+            </div>
+            <div className="font-semibold mt-4 mb-2">Adresa:</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="locality" required placeholder="Localitate *" value={form.locality} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="county" required placeholder="Județ *" value={form.county} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="street" required placeholder="Strada *" value={form.street} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="number" required placeholder="Număr *" value={form.number} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <input type="text" name="block" placeholder="Bloc" value={form.block} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="staircase" placeholder="Scară" value={form.staircase} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="floor" placeholder="Etaj" value={form.floor} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+              <input type="text" name="apartment" placeholder="Apartament" value={form.apartment} onChange={handleChange} className="p-2 rounded bg-gray-800 text-white" />
+            </div>
+            <input type="text" name="postalCode" placeholder="Cod Poștal" value={form.postalCode} onChange={handleChange} className="w-full p-2 rounded bg-gray-800 text-white" />
+            <div className="mt-4">
+              <span className="font-semibold">Vreau să redirecționez pe perioada de 2 ani:</span>
+              <div className="flex gap-4 mt-2">
+                <label className="flex items-center">
+                  <input type="radio" name="redirect2Years" value="DA" checked={form.redirect2Years === "DA"} onChange={handleChange} className="mr-2" />
+                  DA
+                </label>
+                <label className="flex items-center">
+                  <input type="radio" name="redirect2Years" value="NU" checked={form.redirect2Years === "NU"} onChange={handleChange} className="mr-2" />
+                  NU
+                </label>
+              </div>
+            </div>
+            <div className="mt-4">
+              <span className="font-semibold">Semnătură:</span>
+              <div className="border rounded bg-white p-2">
+                <canvas
+                  ref={canvasRef}
+                  width={400}
+                  height={120}
+                  style={{
+                    background: "#fff",
+                    border: "1px solid #ccc",
+                    cursor: "crosshair",
+                    width: "100%",      
+                    maxWidth: "100%",   
+                    height: "120px",   
+                    display: "block",
+                  }}
+                  onMouseDown={handleCanvasMouseDown}
+                  onMouseUp={handleCanvasMouseUp}
+                  onMouseLeave={handleCanvasMouseUp}
+                  onMouseMove={handleCanvasMouseMove}
+                />
+              </div>
+              <button type="button" onClick={handleClearSignature} className="mt-2 bg-orange-500 hover:bg-orange-600 text-white py-1 px-3 rounded">
+                ȘTERGE SEMNĂTURA
+              </button>
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition mt-4"
+            >
+              {loading ? "Se trimite..." : "GENEREAZĂ FORMULAR"}
+            </button>
+          </form>
+          {success && (
+            <p className="text-green-400 mt-4 text-center">
+              Formularul a fost trimis cu succes! Vă vom contacta în curând.
+            </p>
+          )}
+          {success && signatureUrl && (
+            <div className="mt-4 text-center">
+              <Image
+                src={signatureUrl}
+                alt="Signature"
                 width={400}
                 height={120}
-                style={{ background: "#fff", border: "1px solid #ccc", cursor: "crosshair" }}
-                onMouseDown={handleCanvasMouseDown}
-                onMouseUp={handleCanvasMouseUp}
-                onMouseLeave={handleCanvasMouseUp}
-                onMouseMove={handleCanvasMouseMove}
+                className="mx-auto border rounded w-full max-w-full h-auto"
+                style={{ width: "100%", height: "auto" }} // Make image responsive
               />
             </div>
-            <button type="button" onClick={handleClearSignature} className="mt-2 bg-orange-500 hover:bg-orange-600 text-white py-1 px-3 rounded">
-              ȘTERGE SEMNĂTURA
-            </button>
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition mt-4"
-          >
-            {loading ? "Se trimite..." : "GENEREAZĂ FORMULAR"}
-          </button>
-        </form>
-        {success && (
-          <p className="text-green-400 mt-4 text-center">
-            Formularul a fost trimis cu succes! Vă vom contacta în curând.
-          </p>
-        )}
-        {success && signatureUrl && (
-          <div className="mt-4 text-center">
-            <Image
-              src={signatureUrl}
-              alt="Signature"
-              width={400}
-              height={120}
-              className="mx-auto border rounded"
-            />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </main>
   );
