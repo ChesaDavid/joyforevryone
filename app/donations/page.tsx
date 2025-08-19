@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { db, storage } from "@/app/firebase/config";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import Image from "next/image";
 
 const initialForm = {
   familyName: "",
@@ -23,7 +24,7 @@ const initialForm = {
   redirect2Years: "DA",
 };
 
-export const DonationsPage: React.FC = () => {
+const DonationsPage: React.FC = () => {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -87,7 +88,7 @@ export const DonationsPage: React.FC = () => {
       setForm(initialForm);
       handleClearSignature();
     } catch (err) {
-      alert("A apărut o eroare. Încearcă din nou!");
+      alert("A apărut o eroare. Încearcă din nou!"+ err);
     }
     setLoading(false);
   };
@@ -178,6 +179,17 @@ export const DonationsPage: React.FC = () => {
           <p className="text-green-400 mt-4 text-center">
             Formularul a fost trimis cu succes! Vă vom contacta în curând.
           </p>
+        )}
+        {success && signatureUrl && (
+          <div className="mt-4 text-center">
+            <Image
+              src={signatureUrl}
+              alt="Signature"
+              width={400}
+              height={120}
+              className="mx-auto border rounded"
+            />
+          </div>
         )}
       </div>
     </main>

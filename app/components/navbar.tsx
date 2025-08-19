@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import Logo from "@/app/favicon.ico"
 const navLinks = [
   { href: "/", label: "Home", icon: "home" , show: false},
@@ -11,7 +12,7 @@ const navLinks = [
 ];
 
 
-export const Navbar: React.FC = () => {
+const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, rank } = useAuth();
   const pathname = usePathname();
@@ -30,7 +31,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
               <span className="w-11 h-11   rounded-lg flex items-center justify-center text-2xl font-bold text-white shadow-lg">
-                {Logo && <img src={Logo.src} alt="Logo" className="w-8 h-8" />}
+                {Logo && <Image src={Logo.src} alt="Logo" width={32} height={32} className="w-8 h-8" />}
               </span>
               <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-900">
                 JoyForEveryone

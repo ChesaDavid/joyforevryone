@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import { sendContactEmail } from "@/lib/resend";
 import { toast } from "react-toastify";
+import Image from "next/image";
 import Logo from "@/app/favicon.ico";
-export const Footer : React.FC = () =>{
+const Footer : React.FC = () =>{
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
 
@@ -37,7 +38,7 @@ export const Footer : React.FC = () =>{
                 <div className="group">
                     <div className="flex items-center space-x-2 mb-6">
                     <div className="w-10 h-10  rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition duration-500">
-                        {Logo && <img src={Logo.src} alt="Logo" className="w-8 h-8" />} 
+                        {Logo && <Image src={Logo.src} alt="Logo" width={32} height={32} className="w-8 h-8" />}
                     </div>
                     <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-900">
                         JoyForEveryone

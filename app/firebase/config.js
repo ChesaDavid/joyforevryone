@@ -3,7 +3,7 @@ import {  initializeApp ,getApps ,getApp} from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 import {
-    getFirestore,collection,getDoc
+    getFirestore,collection
 } from "firebase/firestore";
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,

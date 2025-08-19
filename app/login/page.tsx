@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth'
 import { auth } from '@/app/firebase/config'
 import { upsertUser } from '@/app/firebase/userHelpers'
-import { updateProfile, signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from 'react-toastify';
 
 const AuthPage = () => {
@@ -49,9 +49,13 @@ const AuthPage = () => {
         setConfirmPassword('');
         toast('Congrats you are in');
         router.push('/');
-      } catch (err: any) {
-        setError(err.message || 'Error creating user.');
+      } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Error cachting user.');
+      } else {
+        setError('Error catching user.');
       }
+    }
     } else {
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
@@ -64,8 +68,12 @@ const AuthPage = () => {
         }
         router.push('/');
         toast.success('Successfully Logged in');
-      } catch (err: any) {
-        setError(err.message || 'Error signing in.')
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message || 'Error signing in.');
+        } else {
+          setError('Error signing in.');
+        }
       }
     }
   }
@@ -83,9 +91,13 @@ const AuthPage = () => {
       }
       router.push('/') 
       toast.success('Successfully Loged in')
-    } catch (err: any) {
-      setError(err.message || 'Error signing in with Google.')
-    }
+    } catch (err: unknown) {
+  if (err instanceof Error) {
+    setError(err.message || 'Error signing in with google.');
+  } else {
+    setError('Error signing in with google.');
+  }
+}
   }
 
   return (
@@ -207,7 +219,7 @@ const AuthPage = () => {
             ) : (
               <div className="flex flex-col items-center" >
               <span className="text-sm text-gray-600">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <span
                   className="text-blue-500 cursor-pointer font-semibold"
                   onClick={handleToggle}

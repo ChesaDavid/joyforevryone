@@ -6,16 +6,24 @@ import { getDocs } from "firebase/firestore";
 import CalendarComponent from "@/app/components/calendar";
 import TableComponent from "@/app/components/showallpresent";
 import InsertImage from "@/app/components/imageupload";
-export const DashboardPage: React.FC = () => {
+
+type UserInfo = {
+  id: string;
+  name?: string;
+  email?: string;
+  prezente?: number;
+  position?: string;
+};
+const DashboardPage: React.FC = () => {
   const { user, rank } = useAuth();
-  const [users, setUsers] = useState<any[]>([]);
-  const [personalInfo, setPersonalIngo] = useState<any[]>([]);
+  const [users, setUsers] = useState<UserInfo[]>([]);
+  const [personalInfo, setPersonalIngo] = useState<UserInfo[]>([]);
   const [addPicture, setAddPicture] = useState<boolean>(false);
   useEffect(() => {
     if (rank === "Coordonator") {
       getDocs(colRef)
         .then((snapshot) => {
-          const usersArr: any[] = [];
+          const usersArr: UserInfo[] = []; // Fix type from any[] to UserInfo[]
           snapshot.docs.forEach((doc) => {
             usersArr.push({ id: doc.id, ...doc.data() });
           });
@@ -37,7 +45,7 @@ export const DashboardPage: React.FC = () => {
           console.log("The error is " + err);
         });
     }
-  }, [rank]);
+  }, [rank, user?.uid]); // Add user?.uid to dependency array
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-950">

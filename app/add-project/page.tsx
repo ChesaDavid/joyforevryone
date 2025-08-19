@@ -4,7 +4,8 @@ import { storage } from "@/app/firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { setProject } from "../firebase/userHelpers";
 import { v4 as uuidv4 } from "uuid";
-import { AuthProvider, useAuth } from "@/app/context/AuthContext";
+import {  useAuth } from "@/app/context/AuthContext";
+import Image from "next/image";
 
 const AddProjectPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -195,7 +196,7 @@ const AddProjectPage: React.FC = () => {
             {uploadedUrl && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-white mb-2">Uploaded Image Preview:</h3>
-                <img src={uploadedUrl} alt="Uploaded" className="w-full rounded-lg" />
+                <Image src={uploadedUrl} alt="Uploaded" className="w-full rounded-lg" />
               </div>
             )}
 

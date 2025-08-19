@@ -8,11 +8,6 @@ type Registration = {
   nameList: string[];
 };
 
-function getLocalDateStr(date: Date) {
-  const pad = (n: number) => n.toString().padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
-
 const ShowTabel: React.FC = () => {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);

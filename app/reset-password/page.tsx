@@ -42,9 +42,9 @@ const ResetPasswordPage: React.FC = () => {
                 <div className="absolute bottom-20 right-10 w-60 h-60 bg-cyan-600 blur-3xl"></div>
             </div>
             <div className="max-w-md w-full bg-gradient-to-br from-gray-950 to-gray-800 text-white p-8 rounded-2xl shadow-xl">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center text-white">Reset Your Password</h2>
+                <h2 className="text-2xl font-bold  mb-4 text-center text-white">Reset Your Password</h2>
                 <p className="text-sm text-white mb-6 text-center ">
-                    Enter your email address below and we'll send you a link to reset your password.
+                    Enter your email address below and we&apos;ll send you a link to reset your password.
                 </p>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="email" className="block text-sm font-medium text-white">

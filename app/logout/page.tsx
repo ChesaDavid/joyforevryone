@@ -3,8 +3,7 @@ import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
-
-export const LogoutPage: React.FC = () => {
+ const LogoutPage: React.FC = () => {
   const { logOut } = useAuth();
   const router = useRouter();
 

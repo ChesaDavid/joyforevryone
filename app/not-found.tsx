@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const NotFoundPage: React.FC = () => {
   return (
@@ -24,10 +25,10 @@ const NotFoundPage: React.FC = () => {
           Oops! Se pare ca Dosoniu a adormit pe tastatura si a uitat sa adauge aceasta pagina. Nu te ingrijora, poti sa te intorci la siguranta.
         </p>
 
-        <a href='/' className="relative px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-bold rounded-lg overflow-hidden group">
+        <Link href='/' className="relative px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-bold rounded-lg overflow-hidden group">
           <span className="relative z-10">Return to Safety</span>
           <span className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-        </a>
+        </Link>
       </div>
 
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-4">

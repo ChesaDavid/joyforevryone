@@ -9,7 +9,7 @@ type Url = {
   url: string;
 };
 
-export const ImageUpload: React.FC = () => {
+const ImageUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadedUrl, setUploadedUrl] = useState<Url | null>(null);

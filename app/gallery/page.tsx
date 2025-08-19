@@ -1,7 +1,7 @@
 'use client';
 
 import React from "react";
-import {ref, uploadBytes,getDownloadURL, listAll} from 'firebase/storage'
+import {ref,getDownloadURL, listAll} from 'firebase/storage'
 import { storage } from "../firebase/config";
 import Image from "next/image";
 import { useState ,useEffect } from "react";
@@ -9,7 +9,7 @@ import { useState ,useEffect } from "react";
 type Url = {
     url: string;
 }
-export const GalleryPage:React.FC = () => {
+const GalleryPage:React.FC = () => {
     const [imageUrl, setImageUrl] = useState<Url[] | null>(null);
     const [error, setError] = useState<string | null>(null);
     useEffect(()=>{

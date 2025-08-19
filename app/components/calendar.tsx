@@ -16,15 +16,13 @@ const getLocalDateStr = (date: Date) =>
   `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 
 export default function CalendarComponent() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [registeredDates, setRegisteredDates] = useState<RegisteredDates>({});
-  const [userRegisteredDates, setUserRegisteredDates] = useState<Set<string>>(new Set());
-  const [personalDats,setPersonalDates] = useState<any[]>([]);
+  const [personalDats, setPersonalDates] = useState<string[]>([]); // Fix type from any[] to string[]
   const { user } = useAuth();//ia din auth datele user
   const hasRun = useRef(false);
 
 // aici voi scrie niste documentare
-  useEffect(() => {//sa vedem
+  useEffect(() => {
     async function fetchRegistrations() { // aici incepem o functie care sa ia registrarea
       const regsCol = collection(db, 'registrations');//col=colection
       const snapshot = await getDocs(regsCol);//
@@ -51,7 +49,7 @@ export default function CalendarComponent() {
     }
     fetchUserRegisteredDates();
     fetchRegistrations();
-  }, []);
+  }, [user]); // Add user to dependency array
   
   const isSaturday = (date: Date) => date.getDay() === 6;
   const notifyNoUser = ()=> toast.info("Please log in to register for a date.")
@@ -89,8 +87,6 @@ export default function CalendarComponent() {
         await updateTheRegistartionField(user.uid, personalRegDats);
         toast.error('Registration canceled for this day.');
         setRegisteredDates(prev => ({ ...prev, [dateStr]: userIds.length }));
-        
-        setSelectedDate(null);
         return;
       }
       if (userIds.length >= 5) {
@@ -107,7 +103,7 @@ export default function CalendarComponent() {
     await setDoc(regRef, { date: dateStr, userIds, nameList }, { merge: true });
     toast.success("Registered for " + dateStr);
     setRegisteredDates(prev => ({ ...prev, [dateStr]: userIds.length }));
-    setSelectedDate(null);
+    return;
   };
 
   const tileDisabled = ({ date }: { date: Date }) => {
@@ -164,12 +160,12 @@ export default function CalendarComponent() {
       await updateDoc(userRef, { prezente: increment(userDayCount[uid]) });
     }
   };
-  useEffect(()=>{
-    if(user && !hasRun.current){
-        hasRun.current = true;
-        incrementPrezenteForPastDays();
+  useEffect(() => {
+    if (user && !hasRun.current) {
+      hasRun.current = true;
+      incrementPrezenteForPastDays();
     }
-  },[])
+  }, [user]); // Add user to dependency array
 
   return (
     <div className="calendar-glass mx-auto my-8 p-6 rounded-2xl shadow-2xl bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-lg border border-gray-700 max-w-md">

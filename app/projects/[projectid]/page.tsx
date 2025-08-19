@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { db } from "@/app/firebase/config";
 import { getDocs ,collection} from "firebase/firestore";
 import { useRouter } from 'next/navigation'
+import Image from "next/image";
 
 type Project = {
     uid: string;
@@ -16,9 +17,9 @@ type Project = {
     imageUrl: string;
 }
 
-export const PrivatePage: React.FC = () => {
+const PrivatePage: React.FC = () => {
     const [selectedProject,setSelctedProjec] = useState<Project[] | null>(null);    
-    const [projectFound , setProjectFound] = useState<Boolean>(false);
+    const [projectFound , setProjectFound] = useState<boolean>(false); // Fix Boolean to boolean
     const pathname = usePathname();
     const router = useRouter();
     useEffect(()=>{
@@ -37,7 +38,7 @@ export const PrivatePage: React.FC = () => {
 
         }
         fetchSelectedProject();
-    },[])
+    }, [pathname]); // Add pathname to dependency array
     if(projectFound===false){
         console.log("Project not found");
         return(
@@ -60,7 +61,7 @@ export const PrivatePage: React.FC = () => {
                     <p className="text-gray-400 mb-6">Author: {selectedProject[0].author}</p>
                     <p className="text-gray-400 mb-6">Date: {selectedProject[0].date}</p>
                     <p className="text-gray-400 mb-6">Participants: {selectedProject[0].participants.join(', ')}</p>
-                    <img src={selectedProject[0].imageUrl} alt="Project Image" className="w-full h-full object-cover rounded-lg mb-4" />
+                    <Image src={selectedProject[0].imageUrl} alt="Project Image" width={600} height={400} className="w-full h-full object-cover rounded-lg mb-4" />
 
                     <p className="text-blue-500 hover:underline cursor-pointer" onClick={() => alert('You are logged in!')}>Click here to confirm access</p>
                 </div>

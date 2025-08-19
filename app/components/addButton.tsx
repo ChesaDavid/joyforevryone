@@ -7,7 +7,7 @@ type AddButtonProps = {
   here: string;
 };
 
-export const AddButton: React.FC<AddButtonProps> = ({ here }) => {
+const AddButton: React.FC<AddButtonProps> = ({ here }) => {
   const router = useRouter();
 
   const handleClick = () => {
