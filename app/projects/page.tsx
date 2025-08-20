@@ -23,8 +23,9 @@ type Project = {
 
 const ProjectsPage:React.FC = ()=>{
     const [projects, setProjects] = React.useState<Project[]>([]);
-    const { user } = useAuth();
+    const { user ,rank} = useAuth();
     const router = useRouter();
+    
     useEffect(() => {
         const fetchProjects = async () => {
             const projectsCol = collection(db, 'projects');
@@ -46,16 +47,14 @@ const ProjectsPage:React.FC = ()=>{
             </main>
         )
 
-    }
-   // ...existing imports and code...
-
+      }
 return (
   <div className="relative min-h-screen bg-gray-950 overflow-hidden flex items-center justify-center p-6">
     <div className="absolute inset-0 opacity-20 -z-10">
       <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-600 blur-3xl"></div>
       <div className="absolute bottom-20 right-10 w-60 h-60 bg-cyan-600 blur-3xl"></div>
     </div>
-    {user && 
+    {user && rank === "Coordonator" &&
   <AddButton  here="add-project" />
 }
 

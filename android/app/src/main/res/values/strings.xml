@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">JoyForEveryone</string>
+    <string name="title_activity_main">JoyForEveryone</string>
+    <string name="package_name">com.joyforeveryone.mobile</string>
+    <string name="custom_url_scheme">com.joyforeveryone.mobile</string>
+</resources>

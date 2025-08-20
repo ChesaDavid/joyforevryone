@@ -126,9 +126,6 @@ export default function CalendarComponent() {
     if (registeredDates[dateStr] >= 5) return 'full';
     if (registeredDates[dateStr]) return 'partial';
     if(!registeredDates[dateStr] && isSaturday && date>today) return 'available';
-    const regsCol = collection(db, 'registrations');
-    const snapshot = getDocs(regsCol);
-
     return 'everyelse';
   };
 

@@ -32,8 +32,9 @@ const DonationsPage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [drawing, setDrawing] = useState(false);
-  const [lastPos, setLastPos] = useState<{x: number, y: number} | null>(null);
+  const [lastPos, setLastPos] = useState<{ x: number, y: number } | null>(null);
 
+  // Mouse events
   const handleCanvasMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     setDrawing(true);
     setLastPos({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
@@ -51,6 +52,46 @@ const DonationsPage: React.FC = () => {
     ctx.stroke();
     setLastPos({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
   };
+
+  // Touch events for mobile
+  const getTouchPos = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    const touch = e.touches[0];
+    return {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  };
+
+  const handleCanvasTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    setDrawing(true);
+    const pos = getTouchPos(e);
+    setLastPos(pos);
+  };
+
+  const handleCanvasTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    setDrawing(false);
+    setLastPos(null);
+  };
+
+  const handleCanvasTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    if (!drawing || !canvasRef.current) return;
+    const ctx = canvasRef.current.getContext("2d");
+    if (!ctx || !lastPos) return;
+    const pos = getTouchPos(e);
+    ctx.strokeStyle = "#2563eb";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(lastPos.x, lastPos.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    setLastPos(pos);
+  };
+
   const handleClearSignature = () => {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
@@ -88,7 +129,7 @@ const DonationsPage: React.FC = () => {
       setForm(initialForm);
       handleClearSignature();
     } catch (err) {
-      alert("A apărut o eroare. Încearcă din nou!"+ err);
+      alert("A apărut o eroare. Încearcă din nou!" + err);
     }
     setLoading(false);
   };
@@ -96,6 +137,7 @@ const DonationsPage: React.FC = () => {
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-950 px-2 py-8 pt-20">
       <div className="w-full max-w-md mx-auto flex flex-col items-center gap-8">
+        
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full text-center">
           <h2 className="text-2xl font-bold mb-2">Donează pentru JoyForEveryone</h2>
           <p className="text-gray-300 mb-4">
@@ -154,30 +196,32 @@ const DonationsPage: React.FC = () => {
             </div>
             <div className="mt-4">
               <span className="font-semibold">Semnătură:</span>
-              <div className="border rounded bg-white p-2">
-                <canvas
-                  ref={canvasRef}
-                  width={400}
-                  height={120}
-                  style={{
-                    background: "#fff",
-                    border: "1px solid #ccc",
-                    cursor: "crosshair",
-                    width: "100%",      
-                    maxWidth: "100%",   
-                    height: "120px",   
-                    display: "block",
-                  }}
-                  onMouseDown={handleCanvasMouseDown}
-                  onMouseUp={handleCanvasMouseUp}
-                  onMouseLeave={handleCanvasMouseUp}
-                  onMouseMove={handleCanvasMouseMove}
-                />
-              </div>
-              <button type="button" onClick={handleClearSignature} className="mt-2 bg-orange-500 hover:bg-orange-600 text-white py-1 px-3 rounded">
-                ȘTERGE SEMNĂTURA
-              </button>
+              <canvas
+                ref={canvasRef}
+                width={400}
+                height={120}
+                style={{
+                  background: "#fff",
+                  border: "1px solid #ccc",
+                  cursor: "crosshair",
+                  width: "100%",
+                  maxWidth: "100%",
+                  height: "120px",
+                  display: "block",
+                  touchAction: "none", // Prevent scrolling while drawing
+                }}
+                onMouseDown={handleCanvasMouseDown}
+                onMouseUp={handleCanvasMouseUp}
+                onMouseLeave={handleCanvasMouseUp}
+                onMouseMove={handleCanvasMouseMove}
+                onTouchStart={handleCanvasTouchStart}
+                onTouchMove={handleCanvasTouchMove}
+                onTouchEnd={handleCanvasTouchEnd}
+              />
             </div>
+            <button type="button" onClick={handleClearSignature} className="mt-2 bg-orange-500 hover:bg-orange-600 text-white py-1 px-3 rounded">
+              ȘTERGE SEMNĂTURA
+            </button>
             <button
               type="submit"
               disabled={loading}
@@ -199,7 +243,7 @@ const DonationsPage: React.FC = () => {
                 width={400}
                 height={120}
                 className="mx-auto border rounded w-full max-w-full h-auto"
-                style={{ width: "100%", height: "auto" }} // Make image responsive
+                style={{ width: "100%", height: "auto" }}
               />
             </div>
           )}

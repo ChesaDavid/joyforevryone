@@ -8,7 +8,7 @@ import {  useAuth } from "@/app/context/AuthContext";
 import Image from "next/image";
 
 const AddProjectPage: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);  
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -51,6 +51,7 @@ const AddProjectPage: React.FC = () => {
           body: JSON.stringify({ title })
         });
         const data = await response.json();
+        console.log(data);
         if(data.description){
           setDescription(data.description);
         } else {
@@ -129,21 +130,10 @@ const AddProjectPage: React.FC = () => {
               ></textarea>
             <button 
                   onClick={()=> handleGenerateDescription()}
-                  disabled                
                   className="flex items-center gap-2 bg-blue-500/10 p-2 rounded-lg mt-2 cursor-pointer hover:bg-blue-900 transition-colors">
                 <span className="text-lg font-medium text-white">AI Description</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  width="24"
-                  height="24"
-                  className="text-blue-500"
-                >
-                  <path d="M10 2a1 1 0 011-1h2a1 1 0 011 1v1h1a1 1 0 010 2h-1v2h1a1 1 0 110 2h-1v2h1a1 1 0 010 2h-1v2h1a1 1 0 010 2h-1v2h1a1 1 0 110 2h-1v1a1 1 0 01-1 1h-2a1 1 0 01-1-1v-1H9a1 1 0 010-2h1v-2H9a1 1 0 110-2h1v-2H9a1 1 0 010-2h1V9H9a1 1 0 010-2h1V5H9a1 1 0 110-2h1V2zm2 18v-2h-2v2h2zm0-4v-2h-2v2h2zm0-4V9h-2v3h2zm0-5V5h-2v2h2z" />
-                </svg>
+                <span className="text-sm text-gray-400">Generate</span> 
               </button>
-              <p>Work in progress</p>
             </div>
 
             <div className="mb-6">

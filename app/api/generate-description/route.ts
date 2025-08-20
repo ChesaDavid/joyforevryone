@@ -8,7 +8,9 @@ export async function POST(req: Request) {
 
   if (!title) return NextResponse.json({ error: "No title provided" }, { status: 400 });
 
-  const prompt = `Write a short, clear project description for a project titled: "${title}"`;
+  const prompt = `Write a short, clear project description for a project at our No-profit organization named JoyForEveryone
+       that has diffrent projects with the children placed at a child shelter and this project is intitled: "${title}" 
+       The description should be engaging, informative, and suitable for a general audience. if the title is in romanian, the description should be in romanian as well.`;
 
   try {
     const completion = await openai.chat.completions.create({
