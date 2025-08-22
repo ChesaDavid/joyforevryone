@@ -5,6 +5,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Logo from "@/app/favicon.ico"
+import {useIsPhone} from "@/app/hook/useIsPhone";
 const navLinks = [
   { href: "/", label: "Home", icon: "home" , show: false},
   { href: "/projects", label: "Projects", icon: "users" , show:false},
@@ -16,6 +17,7 @@ const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, rank } = useAuth();
   const pathname = usePathname();
+  const isPhone = useIsPhone();
 
   const userLinks = [
     user && { href: `/dashboard/${user.uid}`, label: "Dashboard", icon: "brifecase", show: !!user },
@@ -25,7 +27,10 @@ const Navbar: React.FC = () => {
   ].filter(Boolean);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 shadow-lg">
+    <nav
+  className={`fixed left-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 shadow-lg
+    ${isPhone ? "pt-6" : "top-0"}`}
+>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className=" flex justify-between w-min-screen items-center h-16">
           <div className="flex items-center space-x-3">
@@ -105,8 +110,7 @@ const Navbar: React.FC = () => {
             })
           }
           </div>
-          {/* Mobile Hamburger */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center ">
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="p-2 rounded-lg bg-gray-800 text-purple-300 hover:bg-purple-700 hover:text-white transition"

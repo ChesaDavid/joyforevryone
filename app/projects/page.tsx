@@ -8,7 +8,7 @@ import {collection, getDocs} from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import AddButton from "@/app/components/addButton";
-
+import {updateProject} from "@/app/firebase/userHelpers"
 type Project = {
     uid: string;
     author: string;
@@ -39,6 +39,58 @@ const ProjectsPage:React.FC = ()=>{
         };
         fetchProjects();
     },[]);
+    const handleExitProject = (projectId: string) => {
+        if(!user || !user.email) {
+            toast.error("You must be logged in to unregister from a project.");
+            return;
+        }
+        const project = projects.find(p => p.uid === projectId);
+        if(!project) {
+            toast.error("Project not found.");
+            return;
+        }
+        if(!project.participantsEmails.includes(user.email.toLowerCase())) {
+            toast.info("You are not registered for this project.");
+            return;
+        }
+        const updatedParticipants = project.participants.filter(p => p !== (user.displayName || user.email));
+        const updatedParticipantsEmails = project.participantsEmails.filter(email => email !== user.email.toLowerCase());
+        updateProject({ participants: updatedParticipants, projectId: projectId })
+            .then(() => {
+                setProjects(prevProjects => prevProjects.map(p => p.uid === projectId ? { ...p, participants: updatedParticipants, participantsEmails: updatedParticipantsEmails } : p));
+                toast.success("Successfully unregistered from the project.");
+            })
+            .catch((error) => {
+                console.error("Error unregistering from project: ", error);
+                toast.error("Failed to unregister from the project. Please try again later.");
+            });
+    }
+    const handleJoinProject = (projectId : string)=>{
+        if(!user || !user.email) {
+            toast.error("You must be logged in to join a project.");
+            return;
+        }
+        const project = projects.find(p => p.uid === projectId);
+        if(!project) {
+            toast.error("Project not found.");
+            return;
+        }
+        if(project.participantsEmails.includes(user.email.toLowerCase())) {
+            toast.info("You are already registered for this project.");
+            return;
+        }
+        const updatedParticipants = [...project.participants, user.displayName || user.email || "Unknown"];
+        const updatedParticipantsEmails = [...project.participantsEmails, user.email.toLowerCase()];
+        updateProject({ participants: updatedParticipants, projectId: projectId })
+            .then(() => {
+                setProjects(prevProjects => prevProjects.map(p => p.uid === projectId ? { ...p, participants: updatedParticipants, participantsEmails: updatedParticipantsEmails } : p));
+                toast.success("Successfully registered for the project.");
+            })
+            .catch((error) => {
+                console.error("Error joining project: ", error);
+                toast.error("Failed to join the project. Please try again later.");
+            });
+    }
     if(!projects || projects.length === 0) {
         return (
                 <main className="relative min-h-screen bg-gray-900 overflow-hidden flex items-center justify-center mb-16 p-6">
@@ -101,7 +153,7 @@ return (
                     ) : (
                       <button
                         className="mt-4 ml-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
-                        onClick={() => alert(`You are already registered for this project: ${project.title}`)}
+                        onClick={() => handleExitProject(project.uid)}
                       >
                         Unregister
                       </button>
@@ -109,7 +161,7 @@ return (
                   ) : (
                     <button
                       className="mt-4 ml-4 bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 transition-colors"
-                      onClick={() => alert(`You have registered for this project: ${project.title}`)}
+                      onClick={() => handleJoinProject(project.uid)}
                     >
                       Register
                     </button>
