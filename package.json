@@ -25,7 +25,7 @@
     "react-toastify": "^11.0.5",
     "resend": "^4.7.0",
     "uuid": "^11.1.0",
-    "pdf=lib": "1.17.1"
+    "pdf-lib": "1.17.1"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
