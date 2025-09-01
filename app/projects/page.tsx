@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {db} from "@/app/firebase/config";
 import React from "react";
@@ -8,7 +8,10 @@ import {collection, getDocs} from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import AddButton from "@/app/components/addButton";
-import {updateProject} from "@/app/firebase/userHelpers"
+import {updateProject, editProject,disableProjectAttendancePoints,updatePrezente} from "@/app/firebase/userHelpers"
+import EditProjectModal from "@/app/modal/EditProjectModal";
+
+
 type Project = {
     uid: string;
     author: string;
@@ -16,16 +19,19 @@ type Project = {
     description: string;
     date: string;
     participants: string[];
+    participantsUids: string[];
     startOfBegining: string;
     imageUrl: string;
+    numberOfPreznte: number;
     participantsEmails: string[];
+    active: boolean;
 }
 
 const ProjectsPage:React.FC = ()=>{
     const [projects, setProjects] = React.useState<Project[]>([]);
     const { user ,rank} = useAuth();
     const router = useRouter();
-    
+    const [editingProject, setEditingProject] = useState<Project | null>(null);
     useEffect(() => {
         const fetchProjects = async () => {
             const projectsCol = collection(db, 'projects');
@@ -39,6 +45,24 @@ const ProjectsPage:React.FC = ()=>{
         };
         fetchProjects();
     },[]);
+    useEffect(() => {
+    const processPastProjects = async () => {
+      for (const project of projects) {
+        const isPast = new Date(project.date) < new Date();
+        if (isPast && project.active) {
+          await disableProjectAttendancePoints(project.uid);
+
+          for (const userId of project.participantsUids) {
+            await updatePrezente(userId, project.numberOfPreznte);
+          }
+        }
+      }
+    };
+
+    if (projects.length > 0) {
+      processPastProjects();
+    }
+  }, [projects]);
     const handleExitProject = (projectId: string) => {
         if(!user || !user.email) {
             toast.error("You must be logged in to unregister from a project.");
@@ -55,7 +79,8 @@ const ProjectsPage:React.FC = ()=>{
         }
         const updatedParticipants = project.participants.filter(p => p !== (user.displayName || user.email));
         const updatedParticipantsEmails = project.participantsEmails.filter(email => email !== user.email.toLowerCase());
-        updateProject({ participants: updatedParticipants, projectId: projectId })
+        const updatedParticipantsUids = project.participantsUids.filter(id => id !== user.uid);
+        updateProject({ participants: updatedParticipants, participantsUids: updatedParticipantsUids,projectId: projectId })
             .then(() => {
                 setProjects(prevProjects => prevProjects.map(p => p.uid === projectId ? { ...p, participants: updatedParticipants, participantsEmails: updatedParticipantsEmails } : p));
                 toast.success("Successfully unregistered from the project.");
@@ -81,7 +106,8 @@ const ProjectsPage:React.FC = ()=>{
         }
         const updatedParticipants = [...project.participants, user.displayName || user.email || "Unknown"];
         const updatedParticipantsEmails = [...project.participantsEmails, user.email.toLowerCase()];
-        updateProject({ participants: updatedParticipants, projectId: projectId })
+        const updatedParticipantsUids = [...project.participantsUids, user.uid];
+        updateProject({ participants: updatedParticipants,participantsUids: updatedParticipantsUids, projectId: projectId })
             .then(() => {
                 setProjects(prevProjects => prevProjects.map(p => p.uid === projectId ? { ...p, participants: updatedParticipants, participantsEmails: updatedParticipantsEmails } : p));
                 toast.success("Successfully registered for the project.");
@@ -96,7 +122,11 @@ const ProjectsPage:React.FC = ()=>{
                 <main className="relative min-h-screen bg-gray-900 overflow-hidden flex items-center justify-center mb-16 p-6">
 
                 No projects found.
-            </main>
+              {user && rank === "Coordonator" &&
+  <AddButton  here="add-project" />
+}
+
+              </main>
         )
 
       }
@@ -116,7 +146,6 @@ return (
         const userNameOrEmail = user?.displayName || user?.email || "";
         const isParticipant = project.participants.includes(userNameOrEmail);
         const isAuthor = project.participants[0 ] === userNameOrEmail;
-
         return (
           <div key={index} className="bg-gradient-to-br from-gray-950 to-gray-800 p-6 rounded-lg shadow-lg mb-6 w-full max-w-2xl">
             <h2 className="text-2xl font-bold text-white mb-2">{project.title}</h2>
@@ -128,6 +157,7 @@ return (
             <p className="text-gray-500 text-sm">Author: {project.author}</p>
             <p className="text-gray-500 text-sm">Date: {new Date(project.date).toLocaleDateString()}</p>
             <p className="text-gray-500 text-sm">Participants: {project.participants.join(', ')}</p>
+            <p className="text-gray-500 text-sm">Prezente: {String(project.numberOfPreznte)}</p>
             <div>
               <button
                 className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
@@ -140,16 +170,17 @@ return (
               </button>
               {user && (
                 <>
-                  {isPast ? (
-                    <span className="ml-4 text-gray-400">Event in the past</span>
-                  ) : isParticipant ? (
-                    isAuthor ? (
-                      <button
+                  {isAuthor ? (
+			                <button
                         className="mt-4 ml-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                        onClick={() => toast(`You are the author of this project: ${project.title}`)}
+                       onClick={() => setEditingProject(project)}
                       >
                         Edit Project
                       </button>
+                    
+                  ) : isParticipant ? (
+                isPast ? (
+                      <span className="ml-4 text-gray-400">Event in the past</span>
                     ) : (
                       <button
                         className="mt-4 ml-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
@@ -173,6 +204,15 @@ return (
         );
       })}
     </div>
+      <EditProjectModal 
+        isOpen={!!editingProject}
+        onClose={() => setEditingProject(null)}
+        project={editingProject}
+        onSave={(updated) => {
+          console.log("Updated project:", updated);
+          editProject(updated)
+        }}
+      />
 
   </div>
 );

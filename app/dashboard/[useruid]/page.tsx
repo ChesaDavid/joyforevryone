@@ -13,6 +13,7 @@ type UserInfo = {
   email?: string;
   prezente?: number;
   position?: string;
+  phone?: string;
 };
 const DashboardPage: React.FC = () => {
   const { user, rank } = useAuth();
@@ -88,6 +89,7 @@ const DashboardPage: React.FC = () => {
                     <th className="py-2 px-4 border-b border-gray-700 text-left">Email</th>
                     <th className="py-2 px-4 border-b border-gray-700 text-left">Prezente</th>
                     <th className="py-2 px-4 border-b border-gray-700 text-left">Position</th>
+                    <th className="py-2 px-4 border-b border-gray-700 text-left">Phone</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -97,6 +99,10 @@ const DashboardPage: React.FC = () => {
                       <td className="py-2 px-4 border-b border-gray-700">{u.email}</td>
                       <td className="py-2 px-4 border-b border-gray-700">{u.prezente ?? 0}</td>
                       <td className="py-2 px-4 border-b border-gray-700">{u.position || "Volunteer"}</td>
+                      <td className="py-2 px-4 border-b border-gray-700">{u.phone || <button
+                      className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                      onClick={() => alert('Please update your phone number in your profile settings.')}
+                      >Demand phone number</button>}</td>
                     </tr>
                   ))}
                 </tbody>

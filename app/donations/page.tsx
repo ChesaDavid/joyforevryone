@@ -4,6 +4,7 @@ import { db, storage } from "@/app/firebase/config";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Image from "next/image";
+import {fillForm230} from "@/app/firebase/generatePdf";
 
 const initialForm = {
   familyName: "",
@@ -105,6 +106,7 @@ const DonationsPage: React.FC = () => {
     setForm(f => ({ ...f, [name]: value }));
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -120,6 +122,8 @@ const DonationsPage: React.FC = () => {
           signatureDownloadUrl = await getDownloadURL(storageRef);
         }
       }
+      await fillForm230(form, canvasRef.current!);
+
       await addDoc(collection(db, "donationForms230"), {
         ...form,
         signatureUrl: signatureDownloadUrl,

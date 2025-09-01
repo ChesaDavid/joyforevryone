@@ -10,7 +10,8 @@ export async function POST(req: Request) {
 
   const prompt = `Write a short, clear project description for a project at our No-profit organization named JoyForEveryone
        that has diffrent projects with the children placed at a child shelter and this project is intitled: "${title}" 
-       The description should be engaging, informative, and suitable for a general audience. if the title is in romanian, the description should be in romanian as well.`;
+       The description should be engaging, informative, and suitable for a general audience. if the title is in romanian, the description should be in romanian as well.Make it as elaborate as you can 
+       based on the title`;
 
   try {
     const completion = await openai.chat.completions.create({

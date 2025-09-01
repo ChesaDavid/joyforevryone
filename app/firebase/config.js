@@ -2,6 +2,8 @@
 import {  initializeApp ,getApps ,getApp} from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import { getMessaging} from "firebase/messaging";
+
 import {
     getFirestore,collection
 } from "firebase/firestore";
@@ -23,4 +25,7 @@ const db = getFirestore();
 const colRef = collection(db, "users");
 const storage = getStorage(app);
 
-export { app, auth ,user ,db,colRef, storage};
+const messaging = typeof window !== "undefined" ? getMessaging(app) : null;
+
+
+export { app, auth ,user ,db,colRef, storage ,messaging};

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState  } from "react";
 import { storage } from "@/app/firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { setProject } from "../firebase/userHelpers";
@@ -15,6 +15,7 @@ const AddProjectPage: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [timeofstart, setTimeofstart] = useState<string>("");
+  const[ prezente ,setPrezente]= useState<number>(0);
   const { user } = useAuth();
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -70,14 +71,25 @@ const AddProjectPage: React.FC = () => {
         setError("Please fill all fields and upload an image.");
         return;
       }
+      const projectDate = new Date(timeofstart);
+      projectDate.setHours(0,0,0,0);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      if(today>=projectDate){
+        setPrezente(0);
+      }
       const list = [];
+      const listUids = [];
       list.push(user.displayName || user.email || "");
+      listUids.push(user.uid);
       const newProject = {
         uid: uuidv4(),
         name: title,
         description,
         imageUrl: uploadedUrl,
         participants: list,
+        participantsUids:listUids,
+        numberOfPrezente: prezente,
         timeofstart,
       };
 
@@ -85,6 +97,7 @@ const AddProjectPage: React.FC = () => {
         await setProject(newProject);
         setTitle("");
         setDescription("");
+        setPrezente(0);
         setTimeofstart("");
         setUploadedUrl(null);
         setFile(null);
@@ -134,7 +147,7 @@ const AddProjectPage: React.FC = () => {
                 <span className="text-lg font-medium text-white">AI Description</span>
                 <span className="text-sm text-gray-400">Generate</span> 
               </button>
-            </div>
+            </div>  
 
             <div className="mb-6">
               <label htmlFor="timeofstart" className="block text-lg font-medium text-gray-300 mb-2">Start Time</label>
@@ -147,7 +160,17 @@ const AddProjectPage: React.FC = () => {
                 required
               />
             </div>
-
+            <div className="mb-6">
+              <label className="block text-lg font-medium text-gray-300 mb-2">Number of attendance points</label>
+              <input
+                type="number"
+                id="numberOfAttendacePoints"
+                value={prezente}
+                onChange={(e)=>setPrezente(Number(e.target.value))}
+                className="w-full px-4 py-2"
+                required
+              />
+            </div>
             <div className="mb-6">
               <label className="block text-lg font-medium text-gray-300 mb-2">Project Image</label>
               <input
@@ -186,7 +209,13 @@ const AddProjectPage: React.FC = () => {
             {uploadedUrl && (
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-white mb-2">Uploaded Image Preview:</h3>
-                <Image src={uploadedUrl} alt="Uploaded" className="w-full rounded-lg" />
+                <Image 
+                  src={uploadedUrl} 
+                  alt="Uploaded" 
+                  width={600} 
+                  height={400} 
+                  className="w-full rounded-lg" 
+                />
               </div>
             )}
 
