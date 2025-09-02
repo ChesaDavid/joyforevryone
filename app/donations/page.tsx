@@ -145,7 +145,7 @@ const DonationsPage: React.FC = () => {
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full text-center">
           <h2 className="text-2xl font-bold mb-2">Donează pentru JoyForEveryone</h2>
           <p className="text-gray-300 mb-4">
-            Poți susține ONG-ul nostru direct prin transfer bancar:
+            Poți susține Asociația noastră direct prin transfer bancar:
           </p>
           <div className="bg-gray-800 p-4 rounded-lg mb-4">
             <span className="font-semibold text-cyan-400">IBAN:</span>
