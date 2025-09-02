@@ -15,7 +15,7 @@ const navLinks = [
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, rank } = useAuth();
+const { user, rank, whatsappInvite, joinWhatsapp } = useAuth();
   const pathname = usePathname();
   const isPhone = useIsPhone();
 
@@ -49,6 +49,21 @@ const Navbar: React.FC = () => {
             </span>
           </div>
           <div className="hidden md:flex justify-center items-center  space-x-2">
+            {user && whatsappInvite && (
+          <button  
+            onClick={joinWhatsapp}
+            className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400"> 
+                  <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.59 5.99L0 24l6.18-1.62A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.19-1.24-6.19-3.48-8.52zM12 22c-2.01 0-3.97-.59-5.64-1.69l-.4-.26-3.66.96.98-3.57-.24-.37A9.93 9.93 0 012 12c0-5.52 4.48-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.93 9.93 0 0122 12c0 5.52-4.48 10-10 10zm4.81-7.38c-.26-.13-1.54-.76-1.78-.84-.24-.09-.41-.13-.58.13-.17.26-.66.84-.81 1.01-.15.17-.3.2-.56.07-.26-.13-1.11-.41-2.11-1.31-.78-.7-1.31-1.56-1.46-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.07-.13-.58-1.39-.8-1.9-.21-.5-.42-.43-.58-.44-.15 0-.32-.01-.49-.01s-.45.07-.68.32c-.24.26-.89.87-.89 2.12s.91 2.45 1.03 2.62c.13.17 1.79 2.74 4.34 3.84.61.27 1.08.43 1.45.55.61.19 1.16.16 1.6.1.49-.07 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.06-.1-.24-.17-.5-.3z" />
+              </svg>
+              JOIN
+              </button>
+            )}
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -127,6 +142,22 @@ const Navbar: React.FC = () => {
       {menuOpen && (
         <div className="md:hidden bg-gray-900/95 backdrop-blur-lg border-t border-gray-800 shadow-lg px-4 pb-4">
           <div className="flex flex-col space-y-2 mt-2">
+            {user && whatsappInvite &&(
+              <button  
+               onClick={joinWhatsapp}
+               className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400"> 
+                  <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.59 5.99L0 24l6.18-1.62A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.19-1.24-6.19-3.48-8.52zM12 22c-2.01 0-3.97-.59-5.64-1.69l-.4-.26-3.66.96.98-3.57-.24-.37A9.93 9.93 0 012 12c0-5.52 4.48-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.93 9.93 0 0122 12c0 5.52-4.48 10-10 10zm4.81-7.38c-.26-.13-1.54-.76-1.78-.84-.24-.09-.41-.13-.58.13-.17.26-.66.84-.81 1.01-.15.17-.3.2-.56.07-.26-.13-1.11-.41-2.11-1.31-.78-.7-1.31-1.56-1.46-1.82-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.07-.13-.58-1.39-.8-1.9-.21-.5-.42-.43-.58-.44-.15 0-.32-.01-.49-.01s-.45.07-.68.32c-.24.26-.89.87-.89 2.12s.91 2.45 1.03 2.62c.13.17 1.79 2.74 4.34 3.84.61.27 1.08.43 1.45.55.61.19 1.16.16 1.6.1.49-.07 1.54-.63 1.76-1.24.22-.61.22-1.13.15-1.24-.06-.1-.24-.17-.5-.3z" />
+              </svg>
+              JOIN
+              </button>
+            )}
+            
             {navLinks.map((link) => (
               <Link
                 key={link.href}

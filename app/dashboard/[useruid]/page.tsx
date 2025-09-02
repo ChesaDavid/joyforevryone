@@ -6,6 +6,7 @@ import { getDocs } from "firebase/firestore";
 import CalendarComponent from "@/app/components/calendar";
 import TableComponent from "@/app/components/showallpresent";
 import InsertImage from "@/app/components/imageupload";
+import {setWhatsappFalse} from "@/app/firebase/userHelpers";
 
 type UserInfo = {
   id: string;
@@ -14,6 +15,7 @@ type UserInfo = {
   prezente?: number;
   position?: string;
   phone?: string;
+  whatsappInvite?:boolean;
 };
 const DashboardPage: React.FC = () => {
   const { user, rank } = useAuth();
@@ -47,6 +49,18 @@ const DashboardPage: React.FC = () => {
         });
     }
   }, [rank, user?.uid]); // Add user?.uid to dependency array
+    const handleSetWhatsappFalse = async (userId: string) => {
+    try {
+      await setWhatsappFalse(userId); // update Firestore flag
+      window.open(
+        "https://chat.whatsapp.com/Co8j7OboUFh6hHcSisIIVJ",
+        "_blank"
+      ); // open group in new tab
+    } catch (error) {
+      console.error("Failed to update WhatsApp flag:", error);
+    }
+  };
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-950">
@@ -60,20 +74,22 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen pt-15 pb-15 bg-gray-950">
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-600 blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-60 h-60 bg-cyan-600 blur-3xl"></div>
-      </div>
+      
       <div className="bg-gradient-to-br from-gray-950 to-gray-900 text-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
         <h2 className="text-2xl font-bold mb-4 text-center">Welcome to your Dashboard</h2>
+        <div
+         className="flex-col align-middle"
+         >
         <p className="text-center text-gray-400 mb-6">
           {personalInfo[0]?.name || user.email}
         </p>
+        </div>
         <div className="flex justify-center mb-6">
           <div className="w-24 h-24 bg-purple-600 text-white flex items-center justify-center text-3xl font-bold rounded-full shadow-lg border-4 border-cyan-500">
             {personalInfo[0]?.prezente ?? 0}
           </div>
         </div>
+
         <CalendarComponent />
         {rank==="Coordonator" && (
           <TableComponent/>

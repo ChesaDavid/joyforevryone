@@ -54,9 +54,17 @@ export async function upsertUser(user: { uid: string; email: string | null; disp
       position,
       phone: user.phone,
       registrations: [],
+      whatsappInvite: true,
     },
     { merge: true }
   );
+}
+export async function  setWhatsappFalse(userId :string) {
+  const userRef = doc(db,"users",userId);
+  await updateDoc(userRef,{
+    whatsappInvite: false
+  })
+  
 }
 export async function updatePrezente(userId: string, numberOfPrezente: number) {
   const userRef = doc(db, "users", userId);

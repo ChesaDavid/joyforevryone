@@ -1,25 +1,34 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth'
+import { useState } from 'react'
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { auth } from '@/app/firebase/config'
 import { upsertUser } from '@/app/firebase/userHelpers'
 import {
   updateProfile,
   signInWithEmailAndPassword,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-  ConfirmationResult,
-  User,
-  UserCredential,
 } from 'firebase/auth'
 import { toast } from 'react-toastify'
 import { FirebaseError } from 'firebase/app'
 
-declare global {
-  interface Window {
-    recaptchaVerifier?: RecaptchaVerifier
+// Map Firebase errors to friendly messages
+const friendlyError = (error: FirebaseError): string => {
+  switch (error.code) {
+    case 'auth/email-already-in-use':
+      return 'Email already in use. Try signing in instead.'
+    case 'auth/invalid-email':
+      return 'Invalid email address.'
+    case 'auth/weak-password':
+      return 'Password is too weak. Use at least 6 characters.'
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Please try again later.'
+    case 'auth/user-not-found':
+      return 'No account found with this email.'
+    case 'auth/wrong-password':
+      return 'Incorrect password.'
+    default:
+      return error.message || 'Something went wrong.'
   }
 }
 
@@ -32,75 +41,15 @@ const AuthPage = () => {
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [otp, setOtp] = useState('')
-  const [confirmation, setConfirmation] = useState<ConfirmationResult | null>(null)
   const [error, setError] = useState('')
 
   const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth)
-  const [signInWithGoogle] = useSignInWithGoogle(auth)
-
-  useEffect(() => {
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        'recaptcha-container',
-        {
-          size: 'invisible',
-          callback: () => console.log('reCAPTCHA solved'),
-          'expired-callback': () => console.warn('reCAPTCHA expired'),
-        }      )
-
-      window.recaptchaVerifier.render().then(() => {
-        console.log('reCAPTCHA rendered ✅')
-      })
-    }
-  }, [])
 
   const handleToggle = () => {
     setIsSignUp(!isSignUp)
     setError('')
-    setOtp('')
-    setConfirmation(null)
-  }
-
-  // ✅ Send OTP
-  const handleSendOTP = async (): Promise<void> => {
-    if (!phone.startsWith('+')) {
-      setError('Phone must be in international format, e.g. +1234567890')
-      return
-    }
-
-    try {
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        phone,
-        window.recaptchaVerifier!
-      )
-      setConfirmation(confirmationResult)
-      toast.success('OTP sent ✅')
-    } catch (err) {
-      const error = err as FirebaseError
-      console.error(error)
-      setError(error.message || 'Failed to send OTP')
-    }
-  }
-
-  // ✅ Verify OTP
-  const handleVerifyOTP = async (): Promise<User | null> => {
-    if (!confirmation || !otp) {
-      setError('Enter the OTP sent to your phone')
-      return null
-    }
-    try {
-      const result: UserCredential = await confirmation.confirm(otp)
-      toast.success('Phone verified ✅')
-      return result.user
-    } catch (err) {
-      const error = err as FirebaseError
-      console.error(error)
-      setError('Invalid OTP')
-      return null
-    }
+    setPassword('')
+    setConfirmPassword('')
   }
 
   // ✅ Sign Up Flow
@@ -111,94 +60,64 @@ const AuthPage = () => {
       return
     }
 
-    if (!confirmation) {
-      // Step 1: send OTP
-      await handleSendOTP()
-      return
-    }
-
-    if (!otp) {
-      setError('Please enter the OTP sent to your phone')
-      return
-    }
-
-    // Step 2: verify OTP
-    const phoneUser = await handleVerifyOTP()
-    if (!phoneUser) return
-
     try {
-      const res = await createUserWithEmailAndPassword(email, password)
-      if (res && res.user) {
-        await updateProfile(res.user, { displayName: name })
+      const userCredential = await createUserWithEmailAndPassword(email, password)
+      if (!userCredential || !userCredential.user) return
 
-        await upsertUser({
-          uid: res.user.uid,
-          email: res.user.email,
-          displayName: name || '',
-          phone: phone || '',
-        })
+      // update displayName
+      await updateProfile(userCredential.user, { displayName: name })
 
-        console.log('Send WhatsApp group link to', phone)
-        toast.success('Account created 🎉')
-        router.push('/')
-      }
+      // save user in Firestore (with phone)
+      await upsertUser({
+        uid: userCredential.user.uid,
+        email: userCredential.user.email || email,
+        displayName: name,
+        phone: phone,
+      })
+
+      toast.success('Account created 🎉')
+      router.push('/')
     } catch (err) {
-      const error = err as FirebaseError
-      console.error(error)
-      setError(error.message || 'Failed to create account')
+      const fbErr = err as FirebaseError
+      console.error(fbErr)
+      setError(friendlyError(fbErr))
     }
   }
 
   // ✅ Sign In Flow
   const handleSignIn = async (): Promise<void> => {
+    setError('')
     try {
       const res = await signInWithEmailAndPassword(auth, email, password)
       if (res && res.user) {
         await upsertUser({
           uid: res.user.uid,
-          email: res.user.email,
+          email: res.user.email || '',
           displayName: res.user.displayName || '',
-          phone: res.user.phoneNumber || '',
+          phone: phone || '',
         })
       }
       toast.success('Signed in ✅')
       router.push('/')
     } catch (err) {
-      const error = err as FirebaseError
-      console.error(error)
-      setError(error.message || 'Error signing in')
-    }
-  }
-
-  // ✅ Google Sign-In
-  const handleGoogleSignIn = async (): Promise<void> => {
-    try {
-      const res = await signInWithGoogle()
-      if (res && res.user) {
-        await upsertUser({
-          uid: res.user.uid,
-          email: res.user.email,
-          displayName: res.user.displayName || '',
-          phone: res.user.phoneNumber || '',
-        })
-      }
-      toast.success('Signed in with Google ✅')
-      router.push('/')
-    } catch (err) {
-      const error = err as FirebaseError
-      console.error(error)
-      setError(error.message || 'Error signing in with Google')
+      const fbErr = err as FirebaseError
+      console.error(fbErr)
+      setError(friendlyError(fbErr))
     }
   }
 
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault()
-    if(isSignUp){
-      handleSignUp();
-    }else{
-      handleSignIn();
+    if (isSignUp) {
+      handleSignUp()
+    } else {
+      handleSignIn()
     }
   }
+
+  const canSubmit = isSignUp
+    ? email && password && confirmPassword && name && phone
+    : email && password
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950 relative">
@@ -207,11 +126,11 @@ const AuthPage = () => {
         <div className="absolute bottom-20 right-10 w-60 h-60 bg-cyan-600 blur-3xl"></div>
       </div>
 
-      <div className="w-full mt-14 max-w-md p-8 bg-gradient-to-br from-gray-920 to-gray-800 text-white overflow-hidden">
-        <h2 className="text-3xl font-bold text-center text-gray-700 mb-8">
+      <div className="w-full mt-14 max-w-md p-8 bg-gradient-to-br from-gray-920 to-gray-800 text-white overflow-hidden rounded-2xl shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-gray-200 mb-8">
           {isSignUp ? 'Create an Account' : 'Sign In'}
         </h2>
-        <div id="recaptcha-container"></div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUp && (
             <>
@@ -219,16 +138,16 @@ const AuthPage = () => {
                 type="text"
                 placeholder="Full Name"
                 value={name}
-                onChange={e => setName(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                onChange={(e) => setName(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md text-white"
                 required
               />
               <input
                 type="tel"
-                placeholder="+1234567890"
+                placeholder="Phone Number"
                 value={phone}
-                onChange={e => setPhone(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md text-white"
                 required
               />
             </>
@@ -238,16 +157,16 @@ const AuthPage = () => {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md text-white"
             required
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-md"
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-md text-white"
             required
           />
 
@@ -256,51 +175,31 @@ const AuthPage = () => {
               type="password"
               placeholder="Confirm Password"
               value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md text-white"
               required
             />
           )}
 
-          {isSignUp && confirmation && (
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={e => setOtp(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              required
-            />
-          )}
-          
           {error && <div className="text-red-500 text-sm text-center">{error}</div>}
 
           <button
             type="submit"
-            className="w-full py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition"
+            disabled={!canSubmit as unknown as boolean}
+            className="w-full py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition disabled:opacity-50"
           >
-            {isSignUp ? (confirmation ? 'Verify OTP & Sign Up' : 'Send OTP & Sign Up') : 'Sign In'}
+            {isSignUp ? 'Sign Up' : 'Sign In'}
           </button>
         </form>
 
-        <div className="text-center my-6">
-          <button
-            type="button"
-            onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-white border border-gray-300 rounded-md shadow"
-          >
-            <span className="font-semibold text-gray-700">Sign In with Google</span>
-          </button>
-        </div>
-
-        <div className="text-center text-sm text-gray-600">
+        <div className="text-center text-sm text-gray-400 mt-10">
           {isSignUp ? (
             <>Already have an account?{' '}
-              <span className="text-blue-500 cursor-pointer font-semibold" onClick={handleToggle}>Sign In</span>
+              <span className="text-blue-400 cursor-pointer font-semibold" onClick={handleToggle}>Sign In</span>
             </>
           ) : (
-          <>Don&apos;t have an account?{' '}
-              <span className="text-blue-500 cursor-pointer font-semibold" onClick={handleToggle}>Sign Up</span>
+            <>Don&apos;t have an account?{' '}
+              <span className="text-blue-400 cursor-pointer font-semibold" onClick={handleToggle}>Sign Up</span>
             </>
           )}
         </div>
