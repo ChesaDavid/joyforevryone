@@ -11,6 +11,7 @@ import {
   updateDoc,
   increment,
   onSnapshot,
+  deleteDoc,
 } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { useAuth } from "@/app/context/AuthContext";
@@ -166,6 +167,7 @@ export default function CalendarComponent() {
         for (const uid of data.userIds) {
           userDayCount[uid] = (userDayCount[uid] || 0) + 1;
         }
+        deleteDoc(doc(db, 'registrations', data.date));
       }
     }
 

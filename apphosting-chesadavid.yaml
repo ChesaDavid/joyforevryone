@@ -1,0 +1,86 @@
+# Settings for Backend (on Cloud Run).
+# See https://firebase.google.com/docs/app-hosting/configure#cloud-run
+runConfig:
+  minInstances: 0
+  # maxInstances: 100
+  # concurrency: 80
+  # cpu: 1
+  # memoryMiB: 512
+
+# Environment variables and secrets.
+# env:
+  # Configure environment variables.
+  # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
+  # - variable: MESSAGE
+  #   value: Hello world!
+  #   availability:
+  #     - BUILD
+  #     - RUNTIME
+env:
+  - variable: NODE_ENV
+    value: production
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: PORT
+    value: 4000
+    availability:
+      - BUILD
+      - RUNTIME
+  
+  - variable: NEXT_PUBLIC_API_KEY
+    secret: myApyKeySecret
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_AUTH_DOMAIN
+    value: jfe-site.firebaseapp.com
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_PROJECT_KEY
+    value: jfe-site
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_STORAGE_BUCKET
+    secret: myStorageBucketSecret
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_MESSAGING_SENDER_ID
+    secret: myMessagingSenderIdSecret
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_APP_ID
+    value: 1:823488212718:web:a0b8779d6f45550909cdff
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_MEASUREMENT_ID
+    secret: myMeasurementIdSecret
+    availability:
+      - BUILD
+      - RUNTIME
+
+  - variable: NEXT_PUBLIC_RESEND_API_KEY
+    secret: myResendApiKeySecret
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: OPENAI_API_KEY
+    secret: myOpenAiApiKeySecret
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_COORDONATOR_EMAILS
+    secret: NEXT_PUBLIC_COORDONATOR_EMAILS
+    availability:
+      - BUILD
+      - RUNTIME
+
+  # Grant access to secrets in Cloud Secret Manager.
+  # See https://firebase.google.com/docs/app-hosting/configure#secret-parameters
+  # - variable: MY_SECRET
+  #   secret: mySecretRef

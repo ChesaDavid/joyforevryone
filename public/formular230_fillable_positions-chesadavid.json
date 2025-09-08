@@ -1,0 +1,289 @@
+{
+  "page_px": [
+    643,
+    900
+  ],
+  "px_per_mm": 3.0619047619047617,
+  "elements": [
+    {
+      "id": "f0",
+      "left_mm": 9.47,
+      "top_mm": 5.88,
+      "width_mm": 57.15,
+      "height_mm": 27.76,
+      "area": 14875
+    },
+    {
+      "id": "f1",
+      "left_mm": 185.18,
+      "top_mm": 8.16,
+      "width_mm": 13.39,
+      "height_mm": 3.27,
+      "area": 410
+    },
+    {
+      "id": "f2",
+      "left_mm": 108.43,
+      "top_mm": 13.72,
+      "width_mm": 12.41,
+      "height_mm": 3.59,
+      "area": 418
+    },
+    {
+      "id": "f3",
+      "left_mm": 170.16,
+      "top_mm": 16.0,
+      "width_mm": 8.82,
+      "height_mm": 12.08,
+      "area": 999
+    },
+    {
+      "id": "f4",
+      "left_mm": 179.63,
+      "top_mm": 16.0,
+      "width_mm": 8.49,
+      "height_mm": 12.41,
+      "area": 988
+    },
+    {
+      "id": "f5",
+      "left_mm": 188.77,
+      "top_mm": 16.0,
+      "width_mm": 9.47,
+      "height_mm": 12.41,
+      "area": 1102
+    },
+    {
+      "id": "f6",
+      "left_mm": 79.04,
+      "top_mm": 18.29,
+      "width_mm": 71.2,
+      "height_mm": 4.57,
+      "area": 3052
+    },
+    {
+      "id": "f7",
+      "left_mm": 75.44,
+      "top_mm": 23.19,
+      "width_mm": 14.7,
+      "height_mm": 4.25,
+      "area": 585
+    },
+    {
+      "id": "f8",
+      "left_mm": 124.76,
+      "top_mm": 23.19,
+      "width_mm": 30.7,
+      "height_mm": 4.25,
+      "area": 1222
+    },
+    {
+      "id": "f9",
+      "left_mm": 90.47,
+      "top_mm": 23.84,
+      "width_mm": 33.97,
+      "height_mm": 3.92,
+      "area": 1248
+    },
+    {
+      "id": "f10",
+      "left_mm": 104.84,
+      "top_mm": 32.01,
+      "width_mm": 27.11,
+      "height_mm": 8.49,
+      "area": 2158
+    },
+    {
+      "id": "f12",
+      "left_mm": 7.84,
+      "top_mm": 44.42,
+      "width_mm": 37.56,
+      "height_mm": 3.92,
+      "area": 1380
+    },
+    {
+      "id": "f13",
+      "left_mm": 45.72,
+      "top_mm": 44.42,
+      "width_mm": 31.68,
+      "height_mm": 3.92,
+      "area": 1164
+    },
+    {
+      "id": "f14",
+      "left_mm": 12.41,
+      "top_mm": 97.65,
+      "width_mm": 23.51,
+      "height_mm": 4.57,
+      "area": 1008
+    },
+    {
+      "id": "f15",
+      "left_mm": 36.25,
+      "top_mm": 97.65,
+      "width_mm": 56.17,
+      "height_mm": 4.9,
+      "area": 2580
+    },
+    {
+      "id": "f16",
+      "left_mm": 183.22,
+      "top_mm": 97.65,
+      "width_mm": 10.45,
+      "height_mm": 3.92,
+      "area": 384
+    },
+    {
+      "id": "f17",
+      "left_mm": 129.66,
+      "top_mm": 98.3,
+      "width_mm": 13.72,
+      "height_mm": 3.92,
+      "area": 504
+    },
+    {
+      "id": "f18",
+      "left_mm": 7.51,
+      "top_mm": 228.94,
+      "width_mm": 15.35,
+      "height_mm": 3.27,
+      "area": 470
+    },
+    {
+      "id": "f19",
+      "left_mm": 52.26,
+      "top_mm": 228.94,
+      "width_mm": 122.15,
+      "height_mm": 3.59,
+      "area": 4114
+    },
+    {
+      "id": "f20",
+      "left_mm": 8.16,
+      "top_mm": 236.45,
+      "width_mm": 142.07,
+      "height_mm": 3.59,
+      "area": 4785
+    },
+    {
+      "id": "f21",
+      "left_mm": 47.68,
+      "top_mm": 242.66,
+      "width_mm": 48.99,
+      "height_mm": 6.86,
+      "area": 3150
+    },
+    {
+      "id": "f22",
+      "left_mm": 137.5,
+      "top_mm": 242.66,
+      "width_mm": 48.99,
+      "height_mm": 6.86,
+      "area": 3150
+    },
+    {
+      "id": "f23",
+      "left_mm": 16.0,
+      "top_mm": 243.97,
+      "width_mm": 28.74,
+      "height_mm": 3.27,
+      "area": 880
+    },
+    {
+      "id": "f24",
+      "left_mm": 105.82,
+      "top_mm": 244.29,
+      "width_mm": 28.74,
+      "height_mm": 3.59,
+      "area": 968
+    },
+    {
+      "id": "f25",
+      "left_mm": 6.86,
+      "top_mm": 250.5,
+      "width_mm": 196.28,
+      "height_mm": 10.45,
+      "area": 19232
+    },
+    {
+      "id": "f26",
+      "left_mm": 6.53,
+      "top_mm": 254.42,
+      "width_mm": 63.69,
+      "height_mm": 13.39,
+      "area": 7995
+    },
+    {
+      "id": "f27",
+      "left_mm": 166.89,
+      "top_mm": 257.68,
+      "width_mm": 16.33,
+      "height_mm": 2.94,
+      "area": 450
+    },
+    {
+      "id": "f28",
+      "left_mm": 57.81,
+      "top_mm": 264.21,
+      "width_mm": 145.33,
+      "height_mm": 3.59,
+      "area": 4895
+    },
+    {
+      "id": "f29",
+      "left_mm": 6.86,
+      "top_mm": 267.81,
+      "width_mm": 101.24,
+      "height_mm": 6.86,
+      "area": 6510
+    },
+    {
+      "id": "f30",
+      "left_mm": 103.2,
+      "top_mm": 278.26,
+      "width_mm": 45.4,
+      "height_mm": 6.86,
+      "area": 2919
+    },
+    {
+      "id": "f31",
+      "left_mm": 160.36,
+      "top_mm": 278.26,
+      "width_mm": 40.82,
+      "height_mm": 6.86,
+      "area": 2625
+    },
+    {
+      "id": "f32",
+      "left_mm": 30.7,
+      "top_mm": 278.91,
+      "width_mm": 27.76,
+      "height_mm": 5.23,
+      "area": 1360
+    },
+    {
+      "id": "f33",
+      "left_mm": 8.16,
+      "top_mm": 279.24,
+      "width_mm": 22.21,
+      "height_mm": 3.92,
+      "area": 816
+    },
+    {
+      "id": "f34",
+      "left_mm": 82.3,
+      "top_mm": 280.54,
+      "width_mm": 14.7,
+      "height_mm": 3.59,
+      "area": 495
+    },
+    {
+      "id": "f35",
+      "left_mm": 5.55,
+      "top_mm": 285.44,
+      "width_mm": 198.24,
+      "height_mm": 5.55,
+      "area": 10319
+    }
+  ]
+}
