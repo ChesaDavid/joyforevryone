@@ -1,5 +1,10 @@
-
+'use client'
+import {useFCM} from "@/app/hook/useFCM"
 export default function Home() {
+  const {token,permission,error} = useFCM();
+  console.log("FCM Token:", token);
+  console.log("Notification Permission:", permission);
+  console.log("FCM Error:", error);
   return (
     <div className="bg-gray-950 font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">

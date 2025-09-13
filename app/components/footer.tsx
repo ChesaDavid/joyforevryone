@@ -54,13 +54,13 @@ const Footer : React.FC = () =>{
                     <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
                     </h3>
                     <ul className="space-y-3">
-                    <li><a href="about" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
+                    <li><a href="/about" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
                         <span className="w-1 h-1 bg-blue-500 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition duration-300"></span>
                         About</a></li>
-                    <li><a href="contact" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
+                    <li><a href="/contact" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
                         <span className="w-1 h-1 bg-blue-500 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition duration-300"></span>
                         Contact</a></li>
-                    <li><a href="login" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
+                    <li><a href="/login" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
                         <span className="w-1 h-1 bg-blue-500 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition duration-300"></span>
                         Sign xin</a></li>
                     </ul>

@@ -7,6 +7,7 @@ import CalendarComponent from "@/app/components/calendar";
 import TableComponent from "@/app/components/showallpresent";
 import InsertImage from "@/app/components/imageupload";
 import {setWhatsappFalse} from "@/app/firebase/userHelpers";
+import LeaderBoard from "@/app/components/leadrboard";
 
 type UserInfo = {
   id: string;
@@ -91,9 +92,9 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <CalendarComponent />
-        {rank==="Coordonator" && (
-          <TableComponent/>
-        )}
+        <TableComponent/>
+        <LeaderBoard/>
+        
         {rank === "Coordonator" && (
           <div>
             <h3 className="text-xl font-semibold mb-2">All Participants</h3>
