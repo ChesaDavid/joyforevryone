@@ -33,7 +33,8 @@ const LeaderBoard : React.FC = () =>{
     return (
         <div className="max-w-4xl mx-auto my-10 bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-xl p-6">
         <h2 className="text-2xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400">Leaderboard - Top Participants</h2>
-        <table className="min-w-full bg-gray-900 rounded-lg overflow-hidden">
+        <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-900 rounded-lg overflow-scroll">
             <thead>
             <tr>
                 <th className="py-2 px-4 border-b border-gray-700 text-left text-cyan-300">Position</th>
@@ -52,6 +53,7 @@ const LeaderBoard : React.FC = () =>{
             ))}
             </tbody>
         </table>
+        </div>
         </div>
     );
 }
