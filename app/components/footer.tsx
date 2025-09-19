@@ -62,7 +62,7 @@ const Footer : React.FC = () =>{
                         Contact</a></li>
                     <li><a href="/login" className="text-gray-300 hover:text-white hover:pl-2 transition-all duration-300 flex items-center">
                         <span className="w-1 h-1 bg-blue-500 rounded-full mr-2 opacity-0 group-hover:opacity-100 transition duration-300"></span>
-                        Sign xin</a></li>
+                        Sign in</a></li>
                     </ul>
                 </div>
 

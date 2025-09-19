@@ -114,9 +114,15 @@ const AuthPage = () => {
       handleSignIn()
     }
   }
+  const handlePhone = (phone: string): boolean => {
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/ // E.164 format
+    const size = phone.length
+    if (size < 12 || size > 15) return false
+    return phoneRegex.test(phone)
+  }
 
-  const canSubmit = isSignUp
-    ? email && password && confirmPassword && name && phone
+  const canSubmit = isSignUp  
+    ? email && password && confirmPassword && name && phone && handlePhone(phone)
     : email && password
 
   return (
