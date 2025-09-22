@@ -84,11 +84,21 @@ export default function CalendarComponent() {
       return;
     }
 
+    // Always fetch the latest personal registrations from Firestore
+    const userRegRef = doc(db, 'users', user.uid);
+    const userRegSnap = await getDoc(userRegRef);
+    let personalRegDates: string[] = [];
+    if (userRegSnap.exists()) {
+      const data = userRegSnap.data();
+      if (data?.registrations) {
+        personalRegDates = data.registrations;
+      }
+    }
+
     const dateStr = getLocalDateStr(date);
     const regRef = doc(db, 'registrations', dateStr);
     const regSnap = await getDoc(regRef);
     let userIds: string[] = [];
-    let personalRegDates: string[] = [...personalDates];
     let nameList: string[] = [];
 
     if (regSnap.exists()) {
@@ -129,9 +139,16 @@ export default function CalendarComponent() {
   const tileDisabled = ({ date }: { date: Date }) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+    const dateStr = getLocalDateStr(date);
+
+    // Disable past dates and non-Saturdays
     if (date < today) return true;
     if (date.getDay() !== 6) return true;
-    const dateStr = getLocalDateStr(date);
+
+    // Allow user to click a future date if they are already registered for it
+    if (personalDates.includes(dateStr)) return false;
+
+    // Otherwise, disable if full
     return registeredDates[dateStr] >= 5;
   };
 

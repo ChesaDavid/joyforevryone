@@ -12,7 +12,7 @@ const Footer : React.FC = () =>{
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email || !message) {
-            toast.error("Please fill in all fields.");
+            toast.error("Please fill in ax`ll fields.");
             return;
         }
         const result = await sendContactEmail(email, message);
