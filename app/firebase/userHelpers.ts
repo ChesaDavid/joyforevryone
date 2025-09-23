@@ -50,10 +50,8 @@ export async function upsertUser(user: { uid: string; email: string | null; disp
     {
       email: user.email,
       name: user.displayName || "",
-      prezente: 0,
       position,
       phone: user.phone,
-      registrations: [],
       whatsappInvite: true,
     },
     { merge: true }

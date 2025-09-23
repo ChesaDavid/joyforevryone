@@ -73,6 +73,7 @@ const AuthPage = () => {
         email: userCredential.user.email || email,
         displayName: name,
         phone: phone,
+        
       })
 
       toast.success('Account created 🎉')
@@ -95,6 +96,7 @@ const AuthPage = () => {
           email: res.user.email || '',
           displayName: res.user.displayName || '',
           phone: phone || '',
+          
         })
       }
       toast.success('Signed in ✅')
