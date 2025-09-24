@@ -94,9 +94,7 @@ const AuthPage = () => {
         await upsertUser({
           uid: res.user.uid,
           email: res.user.email || '',
-          displayName: res.user.displayName || '',
-          phone: phone || '',
-          
+          displayName: res.user.displayName || '',          
         })
       }
       toast.success('Signed in ✅')
