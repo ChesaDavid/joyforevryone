@@ -4,7 +4,6 @@ import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import GroupPhoto from '../assets/groupPhoto.jpg'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -75,7 +74,7 @@ export default function Home() {
             className="w-full max-w-md rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/5"
           >
             <Image
-              src={GroupPhoto}
+              src="/groupPhoto.jpg"
               alt="JoyForEveryone team photo"
               width={1200}
               height={800}
