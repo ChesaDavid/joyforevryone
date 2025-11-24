@@ -44,7 +44,7 @@ const AuthPage = () => {
   const [error, setError] = useState('')
 
   const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth)
-
+  
   const handleToggle = () => {
     setIsSignUp(!isSignUp)
     setError('')
@@ -54,55 +54,63 @@ const AuthPage = () => {
 
   // ✅ Sign Up Flow
   const handleSignUp = async (): Promise<void> => {
-    setError('')
+    setError('');
     if (password !== confirmPassword) {
-      setError('Passwords do not match.')
-      return
+      setError('Passwords do not match.');
+      return;
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(email, password)
-      if (!userCredential || !userCredential.user) return
+      const userCredential = await createUserWithEmailAndPassword(email, password);
+      if (!userCredential || !userCredential.user) return;
 
       // update displayName
-      await updateProfile(userCredential.user, { displayName: name })
+      await updateProfile(userCredential.user, { displayName: name });
 
-      // save user in Firestore (with phone)
-      await upsertUser({
-        uid: userCredential.user.uid,
-        email: userCredential.user.email || email,
-        displayName: name,
-        phone: phone,
-        
-      })
+      // save user in Firestore (with phone) — safe call, errors handled so we still redirect
+      try {
+        await upsertUser({
+          uid: userCredential.user.uid,
+          email: userCredential.user.email || email,
+          displayName: name,
+          phone: phone && phone.trim() !== '' ? phone.trim() : undefined,
+        });
+      } catch (e) {
+        console.error("SignUp: upsertUser failed", e);
+      }
 
-      toast.success('Account created 🎉')
-      router.push('/')
+      toast.success('Account created 🎉');
+      router.push('/');
     } catch (err) {
-      const fbErr = err as FirebaseError
-      console.error(fbErr)
-      setError(friendlyError(fbErr))
+      const fbErr = err as FirebaseError;
+      console.error(fbErr);
+      setError(friendlyError(fbErr));
     }
   }
 
   // ✅ Sign In Flow
   const handleSignIn = async (): Promise<void> => {
-    setError('')
+    setError('');
     try {
-      const res = await signInWithEmailAndPassword(auth, email, password)
+      const res = await signInWithEmailAndPassword(auth, email, password);
       if (res && res.user) {
-        await upsertUser({
-          uid: res.user.uid,
-          email: res.user.email || '',
-          displayName: res.user.displayName || '',          
-        })
+        try {
+          await upsertUser({
+            uid: res.user.uid,
+            email: res.user.email || '',
+            displayName: res.user.displayName || '',
+            phone: (res.user.phoneNumber && res.user.phoneNumber.trim() !== '') ? res.user.phoneNumber : undefined
+          });
+        } catch (e) {
+          console.error("SignIn: upsertUser failed", e);
+        }
       }
-      toast.success('Signed in ✅')
-      router.push('/')
+      toast.success('Signed in ✅');
+      router.push('/');
     } catch (err) {
-      const fbErr = err as FirebaseError
-      console.error(fbErr)
-      setError(friendlyError(fbErr))
+      const fbErr = err as FirebaseError;
+      console.error(fbErr);
+      setError(friendlyError(fbErr));
     }
   }
 

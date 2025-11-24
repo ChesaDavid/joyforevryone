@@ -45,17 +45,33 @@ export async function upsertUser(user: { uid: string; email: string | null; disp
   if (!user.uid || !user.email) return;
   const coordinatorEmails = getCoordinatorEmails();
   const position = coordinatorEmails.includes(user.email.toLowerCase()) ? "Coordonator" : "Volunteer";
-  await setDoc(
-    doc(db, "users", user.uid),
-    {
-      email: user.email,
-      name: user.displayName || "",
-      position,
-      phone: user.phone,
-      whatsappInvite: true,
-    },
-    { merge: true }
+
+  // build doc only with defined values to avoid `undefined` being sent to Firestore
+  const userDoc: any = {
+    email: user.email,
+    name: user.displayName || "",
+    position,
+    whatsappInvite: true,
+  };
+  if (user.phone !== undefined && user.phone !== null && user.phone !== '') {
+    userDoc.phone = user.phone;
+  }
+
+  // sanitize object by removing keys with undefined values (extra safety)
+  const sanitized = Object.fromEntries(
+    Object.entries(userDoc).filter(([, v]) => v !== undefined)
   );
+
+  try {
+    await setDoc(
+      doc(db, "users", user.uid),
+      sanitized,
+      { merge: true }
+    );
+  } catch (err) {
+    console.error("upsertUser: failed to write user doc", err, "sanitized:", sanitized);
+    // do not rethrow so auth flows aren't blocked by Firestore write issues
+  }
 }
 export async function  setWhatsappFalse(userId :string) {
   const userRef = doc(db,"users",userId);
@@ -84,15 +100,16 @@ export async function setProject(project: { uid: string; name: string; descripti
     {
       uid: project.uid,
       title: project.name,
-      author: project.participants[0],
+      author: project.participants[0] || "",
       description: project.description,
       imageUrl: project.imageUrl,
-      participants: project.participants,
-      participantsUids: project.participantsUids,
-      date: new Date().toISOString(),
-      numberOfPrezente:project.numberOfPrezente,
+      participants: project.participants || [],
+      participantsUids: project.participantsUids || [],
+      // store the event start time in `date` so front-end uses it for "past" checks
+      date: project.timeofstart,
+      numberOfPrezente: project.numberOfPrezente || 0,
       timeOfBegining: project.timeofstart,
-      participantsEmails: project.participants.map(email => email.toLowerCase()),
+      participantsEmails: (project.participants || []).map(email => (email || "").toLowerCase()),
       active: (new Date(project.timeofstart) < new Date()) ? false : true,
     }
   );

@@ -20,40 +20,64 @@ type Project = {
     date: string;
     participants: string[];
     participantsUids: string[];
-    startOfBegining: string;
+    startOfBegining?: string;
     imageUrl: string;
-    numberOfPreznte: number;
+    numberOfPrezente: number;
     participantsEmails: string[];
     active: boolean;
 }
-
+type ProjectUpdate = {
+    projectId: string;
+    title: string;
+    description: string;
+    numberOfPrezente: number;
+}
 const ProjectsPage:React.FC = ()=>{
     const [projects, setProjects] = React.useState<Project[]>([]);
     const { user ,rank} = useAuth();
     const router = useRouter();
-    const [editingProject, setEditingProject] = useState<Project | null>(null);
+    const [editingProject, setEditingProject] = useState<ProjectUpdate | null>(null);
+
     useEffect(() => {
         const fetchProjects = async () => {
             const projectsCol = collection(db, 'projects');
             const snapshot = await getDocs(projectsCol);
             const projectsList: Project[] = [];
             snapshot.forEach(docSnap => {
-                const data = docSnap.data() as Project;
-                projectsList.push(data);
+                const data = docSnap.data() as any;
+                // ensure defaults and use doc id as uid if missing
+                projectsList.push({
+                  uid: data.uid || docSnap.id,
+                  author: data.author || "",
+                  title: data.title || "",
+                  description: data.description || "",
+                  date: data.date || data.timeOfBegining || new Date().toISOString(),
+                  participants: data.participants || [],
+                  participantsUids: data.participantsUids || [],
+                  imageUrl: data.imageUrl || "",
+                  numberOfPrezente: data.numberOfPrezente || 0,
+                  participantsEmails: data.participantsEmails || [],
+                  active: typeof data.active === "boolean" ? data.active : true,
+                } as Project);
             });
             setProjects(projectsList);
         };
         fetchProjects();
     },[]);
+
     useEffect(() => {
     const processPastProjects = async () => {
       for (const project of projects) {
         const isPast = new Date(project.date) < new Date();
         if (isPast && project.active) {
+          // mark inactive so we don't award multiple times
           await disableProjectAttendancePoints(project.uid);
 
-          for (const userId of project.participantsUids) {
-            await updatePrezente(userId, project.numberOfPreznte);
+          // award prezente to participants based on the stored numberOfPrezente
+          for (const userId of project.participantsUids || []) {
+            if (project.numberOfPrezente && project.numberOfPrezente > 0) {
+              await updatePrezente(userId, project.numberOfPrezente);
+            }
           }
         }
       }
@@ -63,6 +87,7 @@ const ProjectsPage:React.FC = ()=>{
       processPastProjects();
     }
   }, [projects]);
+
     const handleExitProject = (projectId: string) => {
         if(!user || !user.email) {
             toast.error("You must be logged in to unregister from a project.");
@@ -117,19 +142,18 @@ const ProjectsPage:React.FC = ()=>{
                 toast.error("Failed to join the project. Please try again later.");
             });
     }
+
     if(!projects || projects.length === 0) {
         return (
                 <main className="relative min-h-screen bg-gray-900 overflow-hidden flex items-center justify-center mb-16 p-6">
-
                 No projects found.
               {user && rank === "Coordonator" &&
   <AddButton  here="add-project" />
 }
-
               </main>
         )
-
       }
+
 return (
   <div className="relative min-h-screen bg-gray-950 overflow-hidden flex items-center justify-center mt-10 p-6">
     <div className="absolute inset-0 opacity-20 -z-10">
@@ -157,7 +181,7 @@ return (
             <p className="text-gray-500 text-sm">Author: {project.author}</p>
             <p className="text-gray-500 text-sm">Date: {new Date(project.date).toLocaleDateString()}</p>
             <p className="text-gray-500 text-sm">Participants: {project.participants.join(', ')}</p>
-            <p className="text-gray-500 text-sm">Prezente: {String(project.numberOfPreznte)}</p>
+            <p className="text-gray-500 text-sm">Prezente (per participant): {project.numberOfPrezente}</p>
             <div>
               <button
                 className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
@@ -171,9 +195,9 @@ return (
               {user && (
                 <>
                   {isAuthor ? (
-			                <button
+                            <button
                         className="mt-4 ml-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                       onClick={() => setEditingProject(project)}
+                       onClick={() => setEditingProject({projectId: project.uid, title: project.title, description: project.description, numberOfPrezente: project.numberOfPrezente})}
                       >
                         Edit Project
                       </button>
@@ -209,7 +233,6 @@ return (
         onClose={() => setEditingProject(null)}
         project={editingProject}
         onSave={(updated) => {
-          console.log("Updated project:", updated);
           editProject(updated)
         }}
       />

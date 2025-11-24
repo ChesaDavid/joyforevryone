@@ -1,21 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { deleteProject } from "../firebase/userHelpers";
 import { toast } from "react-toastify";
+
+type ProjectUpdate = {
+  projectId: string;
+  title?: string;
+  description?: string;
+  numberOfPrezente?: number;
+};
 
 type EditProjectModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  project: {
-    uid: string;
-    title: string;
-    description: string;
-    numberOfPrezente?: number;
-  } | null;
-  onSave: (updatedProject: { projectId: string; title: string; description: string , numbOfPrezente:number}) => void;
+  project: ProjectUpdate | null;
+  onSave: (updatedProject: { projectId: string; title?: string; description?: string; numberOfPrezente?: number }) => void;
 };
 
-const handeDeleteProject = async (projectId: string) => {
+const handleDeleteProject = async (projectId: string) => {
   if (!projectId) return;
   try {
     await deleteProject({ projectId });
@@ -24,19 +26,18 @@ const handeDeleteProject = async (projectId: string) => {
     console.error("Error deleting project:", error);
     toast.info("Failed to delete project. Please try again.");
   }
-}
+};
 
 const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, project, onSave }) => {
-  const [title, setTitle] = useState(project?.title || "");
-  const [description, setDescription] = useState(project?.description || "");
-  const [numberOfPrezente, setNumberOfPrezente] = useState(project?.numberOfPrezente || 0);
+  const [title, setTitle] = useState<string>(project?.title || "");
+  const [description, setDescription] = useState<string>(project?.description || "");
+  const [numberOfPrezente, setNumberOfPrezente] = useState<number>(project?.numberOfPrezente ?? 0);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  React.useEffect(() => {
-    if (project) {
-      setTitle(project.title);
-      setDescription(project.description);
-      setNumberOfPrezente(project.numberOfPrezente || 0);
-    }
+
+  useEffect(() => {
+    setTitle(project?.title || "");
+    setDescription(project?.description || "");
+    setNumberOfPrezente(project?.numberOfPrezente ?? 0);
   }, [project]);
 
   if (!isOpen || !project) return null;
@@ -68,7 +69,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
           placeholder="Number of Prezente"
           min={0}
         />
-        
+
         <div className="flex justify-end gap-3">
           <button
             onClick={onClose}
@@ -79,10 +80,10 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
           <button
             onClick={() => {
               onSave({
-                projectId: project.uid, 
+                projectId: project.projectId,
                 title,
                 description,
-                numbOfPrezente:numberOfPrezente
+                numberOfPrezente,
               });
               onClose();
             }}
@@ -91,15 +92,16 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
             Save
           </button>
           <button
-            onClick={()=>{
+            onClick={() => {
               setIsDeleting(true);
-            }
-            }
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-              Delete Project
-            </button>
+            }}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            Delete Project
+          </button>
         </div>
       </div>
+
       {isDeleting && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60">
           <div className="bg-gray-900 p-6 rounded-xl shadow-lg w-full max-w-sm">
@@ -114,7 +116,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
               </button>
               <button
                 onClick={async () => {
-                  await handeDeleteProject(project.uid);
+                  await handleDeleteProject(project.projectId);
                   setIsDeleting(false);
                   onClose();
                 }}
@@ -124,7 +126,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
               </button>
             </div>
           </div>
-          </div>
+        </div>
       )}
     </div>
   );
