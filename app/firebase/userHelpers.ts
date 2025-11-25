@@ -14,6 +14,13 @@ type ProjectUpdate = {
   [key: string]: string | boolean | string[] | number | undefined; 
 };
 
+type UserDoc = {
+    email: string;
+    name: string;
+    position: string;
+    phone: string | null;
+    whatsappInvite: boolean;
+}
 
 
 
@@ -47,11 +54,12 @@ export async function upsertUser(user: { uid: string; email: string | null; disp
   const position = coordinatorEmails.includes(user.email.toLowerCase()) ? "Coordonator" : "Volunteer";
 
   // build doc only with defined values to avoid `undefined` being sent to Firestore
-  const userDoc: any = {
+  const userDoc: UserDoc = {
     email: user.email,
     name: user.displayName || "",
     position,
     whatsappInvite: true,
+    phone: user.phone || "",
   };
   if (user.phone !== undefined && user.phone !== null && user.phone !== '') {
     userDoc.phone = user.phone;

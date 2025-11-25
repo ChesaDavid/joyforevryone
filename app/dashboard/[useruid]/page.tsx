@@ -6,7 +6,6 @@ import { getDocs } from "firebase/firestore";
 import CalendarComponent from "@/app/components/calendar";
 import TableComponent from "@/app/components/showallpresent";
 import InsertImage from "@/app/components/imageupload";
-import {setWhatsappFalse} from "@/app/firebase/userHelpers";
 import LeaderBoard from "@/app/components/leadrboard";
 
 type UserInfo = {
@@ -49,18 +48,7 @@ const DashboardPage: React.FC = () => {
           console.log("The error is " + err);
         });
     }
-  }, [rank, user?.uid]); // Add user?.uid to dependency array
-    const handleSetWhatsappFalse = async (userId: string) => {
-    try {
-      await setWhatsappFalse(userId); // update Firestore flag
-      window.open(
-        "https://chat.whatsapp.com/Co8j7OboUFh6hHcSisIIVJ",
-        "_blank"
-      ); // open group in new tab
-    } catch (error) {
-      console.error("Failed to update WhatsApp flag:", error);
-    }
-  };
+  }, [rank, user?.uid]); // Add user?.uid to dependency arra
 
   if (!user) {
     return (

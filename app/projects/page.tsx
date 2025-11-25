@@ -44,8 +44,7 @@ const ProjectsPage:React.FC = ()=>{
             const snapshot = await getDocs(projectsCol);
             const projectsList: Project[] = [];
             snapshot.forEach(docSnap => {
-                const data = docSnap.data() as any;
-                // ensure defaults and use doc id as uid if missing
+                const data = docSnap.data();
                 projectsList.push({
                   uid: data.uid || docSnap.id,
                   author: data.author || "",

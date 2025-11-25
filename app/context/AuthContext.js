@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState,useRef } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '@/app/firebase/config';
 import { setWhatsappFalse } from "@/app/firebase/userHelpers"; 
