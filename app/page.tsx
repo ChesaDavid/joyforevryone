@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-
+import grup from "@/assets/grup.png"
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -14,7 +14,7 @@ export default function Home() {
   const router = useRouter()
 
   return (
-    <div className="bg-gray-950 font-sans min-h-screen p-8 sm:p-20 relative overflow-hidden">
+    <div className="bg-gray-950 mt-10 font-sans min-h-screen p-8 sm:p-20 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 -z-10 pointer-events-none">
         <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-600 blur-3xl" />
         <div className="absolute bottom-20 right-10 w-60 h-60 bg-cyan-600 blur-3xl" />
@@ -74,7 +74,7 @@ export default function Home() {
             className="w-full max-w-md rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/5"
           >
             <Image
-              src="/groupPhoto.jpg"
+              src={grup}
               alt="JoyForEveryone team photo"
               width={1200}
               height={800}

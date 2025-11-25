@@ -204,7 +204,7 @@ return (
                   ) : isParticipant ? (
                 isPast ? (
                       <span className="ml-4 text-gray-400">Event in the past</span>
-                    ) : (
+                    ) : !isPast && (
                       <button
                         className="mt-4 ml-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
                         onClick={() => handleExitProject(project.uid)}
@@ -212,7 +212,7 @@ return (
                         Unregister
                       </button>
                     )
-                  ) : (
+                  ) : !isPast && (
                     <button
                       className="mt-4 ml-4 bg-cyan-600 text-white px-4 py-2 rounded hover:bg-cyan-700 transition-colors"
                       onClick={() => handleJoinProject(project.uid)}
