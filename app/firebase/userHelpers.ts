@@ -131,7 +131,7 @@ export async function disableProjectAttendancePoints(projectId: string) {
 }
 
 
-export async function updateProject(update: { participants: string[];participantsUids: string[]; projectId: string }) {
+export async function updateProject(update: { participants: string[];participantsUids: string[]; projectId: string,participantsEmails?: string[] }) {
   if (!update.participants) return;
   const projectRef = doc(db, "projects", update.projectId);
   await updateDoc(projectRef, {
@@ -139,6 +139,7 @@ export async function updateProject(update: { participants: string[];participant
     participantsUids: update.participantsUids
   });
 }
+
 export function isCoordonator(email: string | null | undefined): boolean {
   if (!email) return false;
   const coordinatorEmails = getCoordinatorEmails();

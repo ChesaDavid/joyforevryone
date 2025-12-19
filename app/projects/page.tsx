@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 import AddButton from "@/app/components/addButton";
 import {updateProject, editProject,disableProjectAttendancePoints,updatePrezente} from "@/app/firebase/userHelpers"
 import EditProjectModal from "@/app/modal/EditProjectModal";
-
+import ListOfPeopleModal from "@/app/modal/ListOfPeople";
+import RemoveParticipants from "../modal/RemoveParticipants";
 
 type Project = {
     uid: string;
@@ -32,11 +33,14 @@ type ProjectUpdate = {
     description: string;
     numberOfPrezente: number;
 }
+
 const ProjectsPage:React.FC = ()=>{
     const [projects, setProjects] = React.useState<Project[]>([]);
     const { user ,rank} = useAuth();
     const router = useRouter();
     const [editingProject, setEditingProject] = useState<ProjectUpdate | null>(null);
+    const [showPeopleModal, setShowPeopleModal] = useState<{isOpen: boolean, projectId: string | null}>({isOpen: false, projectId: null});
+    const [removeParticipants,setRemoveParticipants] = useState<{isOpen: boolean, projectId: string | null}>({isOpen: false, projectId: null});
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -59,6 +63,8 @@ const ProjectsPage:React.FC = ()=>{
                   active: typeof data.active === "boolean" ? data.active : true,
                 } as Project);
             });
+            // Sort projects: active first, then inactive
+            projectsList.sort((a, b) => (b.active ? 1 : 0) - (a.active ? 1 : 0));
             setProjects(projectsList);
         };
         fetchProjects();
@@ -220,6 +226,32 @@ return (
                       Register
                     </button>
                   )}
+                    {rank === "Coordonator" && !isPast && (
+                        <>
+                        <button
+                            className="bg-blue-700 ml-4 text-white px-4 py-2 rounded hover:bg-blue-800 transition-colors"
+                            onClick={() =>
+                                setShowPeopleModal({
+                                    isOpen: true,
+                                    projectId: project.uid,
+                                })
+                            }
+                        >
+                            Add people
+                        </button>
+                        <button
+                            className="bg-red-700 ml-4 text-white px-4 py-2 rounded hover:bg-blue-800 transition-colors"
+                            onClick={() =>
+                                setRemoveParticipants({
+                                    isOpen: true,
+                                    projectId: project.uid,
+                                })
+                            }
+                        >
+                            Remove people
+                        </button>
+                        </>
+                    )}
                 </>
               )}
             </div>
@@ -235,6 +267,24 @@ return (
           editProject(updated)
         }}
       />
+      {showPeopleModal.isOpen && showPeopleModal.projectId && (
+          <ListOfPeopleModal
+              isOpen={showPeopleModal.isOpen}
+              projectId={showPeopleModal.projectId}
+              onClose={() =>
+                  setShowPeopleModal({ isOpen: false, projectId: null })
+              }
+          />
+      )}
+      {removeParticipants.isOpen && removeParticipants.projectId && (
+          <RemoveParticipants
+              isOpen={removeParticipants.isOpen}
+              projectId={removeParticipants.projectId}
+              onClose={() =>
+                  setRemoveParticipants({ isOpen: false, projectId: null })
+              }
+          />
+      )}
 
   </div>
 );

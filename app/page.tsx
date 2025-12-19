@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import grup from "@/assets/grup.png"
+import grup from '@/assets/grup.png'
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },

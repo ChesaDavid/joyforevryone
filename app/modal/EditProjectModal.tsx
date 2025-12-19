@@ -85,7 +85,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
                 description,
                 numberOfPrezente,
               });
-              onClose();
+              window.location.reload(); // Refresh page to update project details
             }}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
@@ -118,7 +118,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ isOpen, onClose, pr
                 onClick={async () => {
                   await handleDeleteProject(project.projectId);
                   setIsDeleting(false);
-                  onClose();
+                  window.location.reload(); // Refresh page after deletion
                 }}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
               >

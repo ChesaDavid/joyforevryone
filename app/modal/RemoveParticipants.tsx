@@ -18,9 +18,10 @@ type Props = {
   onClose: () => void;
 };
 
-const ListOfPeople: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
+const RemoveParticipants: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
   const { user, rank } = useAuth();
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [thisProjectParticipantsId, setThisProjectParticipantsId] = useState<string[]>([]);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,13 +38,24 @@ const ListOfPeople: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
       .catch((err) => {
         console.error("Error getting users:", err);
       });
-  }, [isOpen, rank]);
+      getDoc(doc(db, "projects", projectId))
+        .then((projectSnap) => {
+            if (projectSnap.exists()) {
+                const data = projectSnap.data();
+                const participantsUids: string[] = data.participantsUids || [];
+                setThisProjectParticipantsId(participantsUids);
+                // Filter users to only show participants
+                setUsers((prevUsers) => prevUsers.filter(u => participantsUids.includes(u.id)));
+            }
+        })
+        .catch((err) => {
+            console.error("Error getting project participants:", err);
+        });
+  }, [isOpen, rank, projectId]);
 
   if (!isOpen || !user || rank !== "Coordonator") return null;
 
-  const handleAddToProject = async (selectedUser: UserInfo) => {
-    if (!selectedUser.email) return;
-
+  const handleRemoveFromProject = async (selectedUser: UserInfo) => {
     try {
       setLoadingId(selectedUser.id);
 
@@ -58,26 +70,31 @@ const ListOfPeople: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
       const data = projectSnap.data();
       const participants: string[] = data.participants || [];
       const participantsUids: string[] = data.participantsUids || [];
+      const participantsEmails: string[] = data.participantsEmails || [];
 
-      if (participantsUids.includes(selectedUser.id)) {
-        toast.info("User already added");
+      const index = participantsUids.indexOf(selectedUser.id);
+      if (index === -1) {
+        toast.info("User not in project");
         return;
       }
 
+      // Remove from all arrays
+      participants.splice(index, 1);
+      participantsUids.splice(index, 1);
+      participantsEmails.splice(index, 1);
+
       await updateProject({
         projectId,
-        participants: [
-          ...participants,
-          `${selectedUser.name || "Unnamed"} (${selectedUser.email})`,
-        ],
-        participantsUids: [...participantsUids, selectedUser.id],
+        participants,
+        participantsUids,
+        participantsEmails,
       });
 
-      toast.success("User added to project");
+      toast.success("User removed from project");
       window.location.reload(); // Refresh page to update list
     } catch (err) {
       console.error(err);
-      toast.error("Failed to add user");
+      toast.error("Failed to remove user");
     } finally {
       setLoadingId(null);
     }
@@ -96,7 +113,7 @@ const ListOfPeople: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
         </button>
 
         <h2 className="text-lg font-bold text-white mb-4 text-center">
-          Add people to project
+          Remove people from project
         </h2>
 
         {/* Scrollable list for mobile */}
@@ -105,8 +122,8 @@ const ListOfPeople: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
             <button
               key={u.id}
               disabled={loadingId === u.id}
-              onClick={() => handleAddToProject(u)}
-              className="w-full flex flex-col rounded-lg bg-gray-800 px-4 py-3 text-left hover:bg-blue-600 transition disabled:opacity-60"
+              onClick={() => handleRemoveFromProject(u)}
+              className="w-full flex flex-col rounded-lg bg-gray-800 px-4 py-3 text-left hover:bg-red-600 transition disabled:opacity-60"
             >
               <span className="text-white font-medium">
                 {u.name || "Unnamed user"}
@@ -122,4 +139,4 @@ const ListOfPeople: React.FC<Props> = ({ isOpen, projectId, onClose }) => {
   );
 };
 
-export default ListOfPeople;
+export default RemoveParticipants;
