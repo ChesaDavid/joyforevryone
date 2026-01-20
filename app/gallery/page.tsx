@@ -8,6 +8,7 @@ import { useState ,useEffect } from "react";
 
 type Url = {
     url: string;
+    // data: Date
 }
 const GalleryPage:React.FC = () => {
     const [imageUrl, setImageUrl] = useState<Url[] | null>(null);

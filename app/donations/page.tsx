@@ -25,7 +25,8 @@ const initialForm = {
   redirect2Years: "DA",
 };
 
-const DonationsPage: React.FC = () => {
+
+const Formularul230:React.FC = () => {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -137,26 +138,8 @@ const DonationsPage: React.FC = () => {
     }
     setLoading(false);
   };
-
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-950 px-2 py-8 pt-20">
-      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-8">
-        
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full text-center">
-          <h2 className="text-2xl font-bold mb-2">Donează pentru JoyForEveryone</h2>
-          <p className="text-gray-300 mb-4">
-            Poți susține Asociația noastră direct prin transfer bancar:
-          </p>
-          <div className="bg-gray-800 p-4 rounded-lg mb-4">
-            <span className="font-semibold text-cyan-400">IBAN:</span>
-            <br />
-            <span className="text-lg font-mono text-white">RO76BTRLRONCRT0607657602</span>
-            <br />
-            <span className="text-sm text-gray-400">Banca Transilvania</span>
-          </div>
-          <h1 className="text-lg font-semibold text-gray-200">SAU...</h1>
-        </div>
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full">
+    <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full">
           <h2 className="text-2xl font-bold mb-4 text-center">Formularul 230: Redirecționează 3.5% din impozit</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -252,7 +235,30 @@ const DonationsPage: React.FC = () => {
             </div>
           )}
         </div>
+  );
+}
+const DonationsPage: React.FC = () => {
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gray-950 px-2 py-8 pt-20">
+      <div className="w-full max-w-md mx-auto flex flex-col items-center gap-8">
+        
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-lg shadow-lg w-full text-center">
+          <h2 className="text-2xl font-bold mb-2">Donează pentru JoyForEveryone</h2>
+          <p className="text-gray-300 mb-4">
+            Poți susține Asociația noastră direct prin transfer bancar:
+          </p>
+          <div className="bg-gray-800 p-4 rounded-lg mb-4">
+            <span className="font-semibold text-cyan-400">IBAN:</span>
+            <br />
+            <span className="text-lg font-mono text-white">RO76BTRLRONCRT0607657602</span>
+            <br />
+            <span className="text-sm text-gray-400">Banca Transilvania</span>
+          </div>
+          {/* <h1 className="text-lg font-semibold text-gray-200">SAU...</h1> */}
+        </div>
+      {/* <Formularul230 />  Momentan nu avem asa ceva */}
       </div>
+      
     </main>
   );
 };

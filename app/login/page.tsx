@@ -207,7 +207,7 @@ const AuthPage = () => {
         </form>
 
         <div className="text-center text-sm text-gray-400 mt-10">
-          {isSignUp ? (
+          {/* {isSignUp ? (
             <>Already have an account?{' '}
               <span className="text-blue-400 cursor-pointer font-semibold" onClick={handleToggle}>Sign In</span>
             </>
@@ -215,7 +215,7 @@ const AuthPage = () => {
             <>Don&apos;t have an account?{' '}
               <span className="text-blue-400 cursor-pointer font-semibold" onClick={handleToggle}>Sign Up</span>
             </>
-          )}
+          )} */}
         </div>
       </div>
     </div>

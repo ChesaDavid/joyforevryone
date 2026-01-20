@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #3d0c0c;
     --foreground: #ededed;
   }
 }
@@ -23,4 +23,31 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 3D background layers and subtle float/parallax */
+.background-3d {
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.bg-layer {
+  will-change: transform, opacity;
+  transition: transform 280ms cubic-bezier(.2,.9,.2,1), opacity 400ms ease;
+  transform-origin: center;
+}
+
+.animate-slowFloat {
+  animation: slowFloat 8s ease-in-out infinite;
+}
+
+@keyframes slowFloat {
+  0% { transform: translate3d(0,0,0) rotateY(0deg) }
+  50% { transform: translate3d(6px,-8px,0) rotateY(1deg) }
+  100% { transform: translate3d(0,0,0) rotateY(0deg) }
+}
+
+/* reduce motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .bg-layer, .animate-slowFloat { transition: none; animation: none }
 }

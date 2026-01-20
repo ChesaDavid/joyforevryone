@@ -5,7 +5,6 @@ import { useAuth } from "@/app/context/AuthContext";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Logo from "@/app/favicon.ico"
-import {useIsPhone} from "@/app/hook/useIsPhone";
 const navLinks = [
   { href: "/", label: "Home", icon: "home" , show: false},
   { href: "/projects", label: "Projects", icon: "users" , show:false},
@@ -17,19 +16,17 @@ const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 const { user, rank, whatsappInvite, joinWhatsapp } = useAuth();
   const pathname = usePathname();
-  const isPhone = useIsPhone();
 
   const userLinks = [
     user && { href: `/dashboard/${user.uid}`, label: "Dashboard", icon: "brifecase", show: !!user },
-    { href: "/login", label: "Login", show: !user },
+    { href: "/login", label: "Login", show: !user }, 
     {href:"/donations", label: "Donations", icon: "heart", show: true},
     { href: "/logout", label: "Logout", show: !!user },
   ].filter(Boolean);
 
   return (
     <nav
-  className={`fixed left-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 shadow-lg
-    ${isPhone ? "pt-6" : "top-0"}`}
+  className={`fixed left-0 w-full z-50 bg-gray-900/80 backdrop-blur-lg border-b border-gray-800 shadow-lg`}
 >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className=" flex justify-between w-min-screen items-center h-16">
