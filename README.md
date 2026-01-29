@@ -72,16 +72,3 @@ An informational page about the mission, values, and people behind the platform.
 | React Context  | Global state for user auth           |
 | OpenAI API     | Description generation               |
 
----
-
-## 📂 Folder Structure
-
-!()
----
-
-## 🔧 Setup Instructions
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ChesaDavid/joyforevryone.git
-   cd jfe-site
