@@ -45,12 +45,7 @@ const AuthPage = () => {
 
   const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth)
   
-  const handleToggle = () => {
-    setIsSignUp(!isSignUp)
-    setError('')
-    setPassword('')
-    setConfirmPassword('')
-  }
+
 
   // ✅ Sign Up Flow
   const handleSignUp = async (): Promise<void> => {
